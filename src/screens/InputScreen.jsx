@@ -134,9 +134,8 @@ export function InputScreen({ onSubmit }) {
               aria-label={
                 isDark ? "Switch to light mode" : "Switch to dark mode"
               }
-              onMouseDown={(e) => e.preventDefault()}
-              style={{ outline: "none", WebkitTapHighlightColor: "transparent" }}
-              className="p-2 rounded-lg text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors focus:outline-none focus-visible:outline-none"
+              style={{ background: "none", border: "none", WebkitAppearance: "none", WebkitTapHighlightColor: "transparent" }}
+              className="bg-transparent border-none p-2 rounded-lg text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
             >
               {isDark ? <SunIcon /> : <MoonIcon />}
             </button>
