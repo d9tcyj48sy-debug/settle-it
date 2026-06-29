@@ -1,122 +1,75 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState } from "react";
+import { InputScreen } from "./screens/InputScreen";
+import { getVerdict } from "./services/verdictService";
+import "./App.css";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [screen, setScreen] = useState("input");
+  const [verdict, setVerdict] = useState(null);
+  const [error, setError] = useState(null);
 
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
+  async function handleSubmit(sideA, sideB) {
+    setScreen("loading");
+    const result = await getVerdict(sideA, sideB);
+    if (result.error) {
+      setError(result);
+      setScreen("error");
+    } else {
+      setVerdict(result);
+      setScreen("verdict");
+    }
+  }
+
+  if (screen === "input") {
+    return <InputScreen onSubmit={handleSubmit} />;
+  }
+
+  if (screen === "loading") {
+    return (
+      <div className="min-h-[100dvh] bg-white dark:bg-zinc-950 flex items-center justify-center">
+        <p className="text-zinc-400 text-sm">The arbitrator is thinking…</p>
+      </div>
+    );
+  }
+
+  if (screen === "verdict") {
+    return (
+      <div className="min-h-[100dvh] bg-white dark:bg-zinc-950 flex items-center justify-center p-5">
+        <div className="text-zinc-900 dark:text-white max-w-[480px] w-full">
+          <p className="text-sm text-zinc-500 mb-2">{verdict?.topicLabel}</p>
+          <p className="text-4xl font-bold mb-1">
+            {verdict?.sideAPercentage}
+            <span className="text-zinc-500 text-2xl">%</span>
           </p>
+          <p className="text-base leading-relaxed mb-6">{verdict?.ruling}</p>
+          <button
+            onClick={() => setScreen("input")}
+            className="text-sm text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
+          >
+            ← back
+          </button>
         </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+      </div>
+    );
+  }
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+  if (screen === "error") {
+    return (
+      <div className="min-h-[100dvh] bg-white dark:bg-zinc-950 flex items-center justify-center p-5">
+        <div className="text-center max-w-[480px] w-full">
+          <p className="text-zinc-900 dark:text-white mb-2">
+            {error?.message ?? "Something went wrong."}
+          </p>
+          <button
+            onClick={() => setScreen("input")}
+            className="text-sm text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
+          >
+            ← try again
+          </button>
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+      </div>
+    );
+  }
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+  return null;
 }
-
-export default App
