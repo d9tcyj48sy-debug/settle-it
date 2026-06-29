@@ -1,14 +1,9 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   getThemePreference,
   setThemePreference,
 } from "../services/storageService";
-
-const ThemeContext = createContext(null);
-
-export function useTheme() {
-  return useContext(ThemeContext);
-}
+import { ThemeContext } from "./ThemeContext";
 
 function resolveIsDark(preference) {
   if (preference === "dark") return true;
