@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { InputScreen } from "./screens/InputScreen";
+import { LoadingScreen } from "./screens/LoadingScreen";
 import { getVerdict } from "./services/verdictService";
 import "./App.css";
+
+const MIN_LOADING_MS = 1500;
 
 export default function App() {
   const [screen, setScreen] = useState("input");
@@ -10,7 +13,12 @@ export default function App() {
 
   async function handleSubmit(sideA, sideB) {
     setScreen("loading");
+    const start = Date.now();
     const result = await getVerdict(sideA, sideB);
+    const elapsed = Date.now() - start;
+    if (elapsed < MIN_LOADING_MS) {
+      await new Promise((r) => setTimeout(r, MIN_LOADING_MS - elapsed));
+    }
     if (result.error) {
       setError(result);
       setScreen("error");
@@ -25,11 +33,7 @@ export default function App() {
   }
 
   if (screen === "loading") {
-    return (
-      <div className="min-h-[100dvh] bg-white dark:bg-zinc-950 flex items-center justify-center">
-        <p className="text-zinc-400 text-sm">The arbitrator is thinking…</p>
-      </div>
-    );
+    return <LoadingScreen />;
   }
 
   if (screen === "verdict") {
