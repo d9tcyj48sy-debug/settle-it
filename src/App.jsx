@@ -3,6 +3,7 @@ import { InputScreen } from "./screens/InputScreen";
 import { LoadingScreen } from "./screens/LoadingScreen";
 import { VerdictScreen } from "./screens/VerdictScreen";
 import { HistoryScreen } from "./screens/HistoryScreen";
+import { ErrorScreen } from "./screens/ErrorScreen";
 import { BottomNav } from "./components/BottomNav";
 import { getVerdict } from "./services/verdictService";
 import { addVerdict, updateStreak } from "./services/storageService";
@@ -14,8 +15,10 @@ export default function App() {
   const [screen, setScreen] = useState("input");
   const [verdict, setVerdict] = useState(null);
   const [error, setError] = useState(null);
+  const [lastSides, setLastSides] = useState({ sideA: "", sideB: "" });
 
   async function handleSubmit(sideA, sideB) {
+    setLastSides({ sideA, sideB });
     setScreen("loading");
     const start = Date.now();
     const result = await getVerdict(sideA, sideB);
@@ -41,6 +44,13 @@ export default function App() {
     }
   }
 
+  function handleStartOver() {
+    setVerdict(null);
+    setError(null);
+    setLastSides({ sideA: "", sideB: "" });
+    setScreen("input");
+  }
+
   const showNav = screen !== "loading";
   const activeTab = screen === "history" ? "history" : "settle";
 
@@ -51,27 +61,16 @@ export default function App() {
       {screen === "verdict" && (
         <VerdictScreen
           verdict={verdict}
-          onNewSettle={() => {
-            setVerdict(null);
-            setScreen("input");
-          }}
+          onNewSettle={handleStartOver}
         />
       )}
       {screen === "history" && <HistoryScreen />}
       {screen === "error" && (
-        <div className="min-h-[100dvh] bg-white dark:bg-zinc-950 flex items-center justify-center p-5 pb-24">
-          <div className="text-center max-w-[480px] w-full">
-            <p className="text-zinc-900 dark:text-white mb-4">
-              {error?.message ?? "Something went wrong."}
-            </p>
-            <button
-              onClick={() => setScreen("input")}
-              className="text-sm text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
-            >
-              ← try again
-            </button>
-          </div>
-        </div>
+        <ErrorScreen
+          errorType={error?.errorType ?? "unknown"}
+          onRetry={() => handleSubmit(lastSides.sideA, lastSides.sideB)}
+          onStartOver={handleStartOver}
+        />
       )}
 
       {showNav && (
