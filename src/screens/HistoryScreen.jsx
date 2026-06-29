@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getHistory, getStreak } from "../services/storageService";
-import { ChevronDownIcon } from "../components/Icons";
+import { ChevronDownIcon, ShareIcon } from "../components/Icons";
+import { shareVerdict } from "../services/shareCard";
 
 function formatDate(isoString) {
   const date = new Date(isoString);
@@ -39,10 +40,17 @@ function StreakCard({ streak }) {
 function HistoryEntry({ entry, isExpanded, onToggle }) {
   const { topicLabel, createdAt, sideAPercentage, ruling, won } = entry;
 
+  function handleShare(e) {
+    e.stopPropagation();
+    shareVerdict(entry).catch((err) => {
+      if (err?.name !== "AbortError") console.error("Share failed:", err);
+    });
+  }
+
   return (
-    <button
+    <div
       onClick={onToggle}
-      className="w-full text-left rounded-xl px-4 py-3 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 transition-colors hover:border-zinc-300 dark:hover:border-zinc-700"
+      className="rounded-xl px-4 py-3 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 cursor-pointer hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors"
     >
       {/* Top row */}
       <div className="flex items-start justify-between gap-2">
@@ -86,11 +94,24 @@ function HistoryEntry({ entry, isExpanded, onToggle }) {
         className="overflow-hidden transition-all duration-300 ease-in-out"
         style={{ maxHeight: isExpanded ? "300px" : "0px" }}
       >
-        <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed pt-3 mt-3 border-t border-zinc-200 dark:border-zinc-800">
-          {ruling}
-        </p>
+        {/* stopPropagation so clicks inside don't retrigger the toggle */}
+        <div onClick={(e) => e.stopPropagation()}>
+          <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed pt-3 mt-3 border-t border-zinc-200 dark:border-zinc-800">
+            {ruling}
+          </p>
+          <div className="flex justify-end mt-2">
+            <button
+              onClick={handleShare}
+              aria-label="Share this verdict"
+              className="p-1.5 rounded-lg text-zinc-400 dark:text-zinc-500 hover:text-[#7c5cfc] transition-colors"
+              style={{ WebkitTapHighlightColor: "transparent" }}
+            >
+              <ShareIcon size={16} />
+            </button>
+          </div>
+        </div>
       </div>
-    </button>
+    </div>
   );
 }
 
@@ -121,7 +142,10 @@ export function HistoryScreen() {
   }
 
   return (
-    <div className="min-h-[100dvh] bg-white dark:bg-zinc-950 transition-colors duration-200" style={{ paddingTop: "env(safe-area-inset-top)" }}>
+    <div
+      className="min-h-[100dvh] bg-white dark:bg-zinc-950 transition-colors duration-200"
+      style={{ paddingTop: "env(safe-area-inset-top)" }}
+    >
       <div className="max-w-[480px] mx-auto px-5 pt-4 pb-24">
         <h1 className="text-xl font-semibold tracking-tight text-zinc-900 dark:text-white mb-6">
           settle it<span style={{ color: "#7c5cfc" }}>.</span>
