@@ -116,7 +116,8 @@ export function InputScreen({ onSubmit }) {
   }
 
   return (
-    <div className="min-h-[100dvh] bg-white dark:bg-zinc-950 flex justify-center items-center transition-colors duration-200">
+    <div className="min-h-[100dvh] bg-white dark:bg-zinc-950 flex flex-col transition-colors duration-200">
+      <div className="flex-1 flex justify-center items-center">
       <div className="w-full max-w-[480px] flex flex-col px-5 py-10">
         {/* Header */}
         <header className="flex items-center justify-between mb-10">
@@ -168,6 +169,11 @@ export function InputScreen({ onSubmit }) {
           </button>
         </form>
       </div>
+      </div>
+
+      <p className="text-center text-xs text-zinc-400 dark:text-zinc-600 pb-20 px-5">
+        verdicts are AI-generated for fun — not actual advice.
+      </p>
     </div>
   );
 }
