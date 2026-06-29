@@ -34,6 +34,8 @@ export function VerdictScreen({ verdict, onNewSettle }) {
       }
     }
 
+    try { navigator.vibrate && navigator.vibrate([40, 30, 60]); } catch (_) {}
+
     rafRef.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafRef.current);
   }, [sideAPercentage]);
@@ -47,7 +49,7 @@ export function VerdictScreen({ verdict, onNewSettle }) {
 
   return (
     <div className="min-h-[100dvh] bg-white dark:bg-zinc-950 flex justify-center items-center transition-colors duration-200" style={{ paddingTop: "env(safe-area-inset-top)" }}>
-      <div className="w-full max-w-[480px] flex flex-col px-5 py-10 gap-8">
+      <div className="w-full max-w-[480px] flex flex-col px-5 pt-6 pb-10 gap-8">
 
         {/* App name */}
         <h1 className="text-xl font-semibold tracking-tight text-zinc-900 dark:text-white">

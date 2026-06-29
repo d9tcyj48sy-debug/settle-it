@@ -118,7 +118,7 @@ export function InputScreen({ onSubmit }) {
   return (
     <div className="min-h-[100dvh] bg-white dark:bg-zinc-950 flex flex-col transition-colors duration-200" style={{ paddingTop: "env(safe-area-inset-top)" }}>
       <div className="flex-1 flex justify-center items-center">
-      <div className="w-full max-w-[480px] flex flex-col px-5 py-10">
+      <div className="w-full max-w-[480px] flex flex-col px-5 pt-6 pb-10">
         {/* Header */}
         <header className="flex items-center justify-between mb-10">
           <h1 className="text-xl font-semibold tracking-tight text-zinc-900 dark:text-white">

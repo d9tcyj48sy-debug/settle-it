@@ -122,7 +122,7 @@ export function HistoryScreen() {
 
   return (
     <div className="min-h-[100dvh] bg-white dark:bg-zinc-950 transition-colors duration-200" style={{ paddingTop: "env(safe-area-inset-top)" }}>
-      <div className="max-w-[480px] mx-auto px-5 py-6 pb-24">
+      <div className="max-w-[480px] mx-auto px-5 pt-4 pb-24">
         <h1 className="text-xl font-semibold tracking-tight text-zinc-900 dark:text-white mb-6">
           settle it<span style={{ color: "#7c5cfc" }}>.</span>
         </h1>
