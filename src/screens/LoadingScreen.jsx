@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { ScaleIcon } from "../components/Icons";
 
 const MESSAGES = [
   "weighing both sides…",
@@ -10,32 +11,6 @@ const MESSAGES = [
   "separating facts from feelings…",
   "almost ready to destroy someone's ego…",
 ];
-
-function ScaleIcon() {
-  return (
-    <svg
-      width="48"
-      height="48"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      {/* pole + base */}
-      <line x1="12" y1="3" x2="12" y2="21" />
-      <line x1="9" y1="21" x2="15" y2="21" />
-      {/* beam */}
-      <line x1="2" y1="7" x2="22" y2="7" />
-      {/* left pan */}
-      <path d="M2 7v5a4 4 0 0 0 8 0V7" />
-      {/* right pan */}
-      <path d="M14 7v5a4 4 0 0 0 8 0V7" />
-    </svg>
-  );
-}
 
 function PulsingDots() {
   return (
@@ -65,7 +40,7 @@ export function LoadingScreen() {
     <div className="min-h-[100dvh] bg-white dark:bg-zinc-950 flex items-center justify-center transition-colors duration-200">
       <div className="flex flex-col items-center gap-6 px-8 text-center">
         <span style={{ color: "#7c5cfc" }}>
-          <ScaleIcon />
+          <ScaleIcon size={48} />
         </span>
 
         <div className="flex flex-col items-center gap-3">
