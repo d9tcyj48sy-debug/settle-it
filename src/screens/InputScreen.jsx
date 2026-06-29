@@ -75,6 +75,7 @@ function Textarea({ label, value, onChange, placeholder }) {
         onChange={(e) => onChange(e.target.value.slice(0, MAX))}
         placeholder={placeholder}
         rows={8}
+        style={{ minHeight: "160px" }}
         className={`
           w-full resize-none rounded-xl px-4 py-3 text-sm leading-relaxed
           bg-zinc-100 dark:bg-zinc-900
@@ -115,8 +116,8 @@ export function InputScreen({ onSubmit }) {
   }
 
   return (
-    <div className="min-h-[100dvh] bg-white dark:bg-zinc-950 flex justify-center transition-colors duration-200">
-      <div className="w-full max-w-[480px] flex flex-col px-5 py-6">
+    <div className="min-h-[100dvh] bg-white dark:bg-zinc-950 flex justify-center items-center transition-colors duration-200">
+      <div className="w-full max-w-[480px] flex flex-col px-5 py-10">
         {/* Header */}
         <header className="flex items-center justify-between mb-10">
           <h1 className="text-xl font-semibold tracking-tight text-zinc-900 dark:text-white">
