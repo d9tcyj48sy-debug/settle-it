@@ -116,46 +116,51 @@ export function InputScreen({ onSubmit }) {
   }
 
   return (
-    <div className="min-h-[100dvh] bg-white dark:bg-zinc-950 flex flex-col transition-colors duration-200" style={{ paddingTop: "env(safe-area-inset-top)" }}>
+    <div
+      className="min-h-[100dvh] bg-white dark:bg-zinc-950 flex flex-col transition-colors duration-200"
+      style={{ paddingTop: "env(safe-area-inset-top)" }}
+    >
       <div className="flex-1 flex justify-center items-center">
-      <div className="w-full max-w-[480px] flex flex-col px-5 pt-6 pb-10">
-        {/* Header */}
-        <header className="flex items-center justify-between mb-10">
-          <h1 className="text-xl font-semibold tracking-tight text-zinc-900 dark:text-white">
-            settle it
-            <span style={{ color: "#7c5cfc" }}>.</span>
-          </h1>
-          <button
-            type="button"
-            onClick={toggleTheme}
-            aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-            className="p-2 rounded-lg text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-          >
-            {isDark ? <SunIcon /> : <MoonIcon />}
-          </button>
-        </header>
+        <div className="w-full max-w-[480px] flex flex-col px-5 pt-6 pb-10">
+          {/* Header */}
+          <header className="flex items-center justify-between mb-10">
+            <h1 className="text-xl font-semibold tracking-tight text-zinc-900 dark:text-white">
+              settle it
+              <span style={{ color: "#7c5cfc" }}>.</span>
+            </h1>
+            <button
+              type="button"
+              onClick={toggleTheme}
+              aria-label={
+                isDark ? "Switch to light mode" : "Switch to dark mode"
+              }
+              className="p-2 rounded-lg text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors focus:outline-none focus-visible:outline-none"
+            >
+              {isDark ? <SunIcon /> : <MoonIcon />}
+            </button>
+          </header>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="flex flex-col gap-6 flex-1">
-          <div className="flex gap-3">
-            <Textarea
-              label="your side"
-              value={sideA}
-              onChange={setSideA}
-              placeholder="I said we agreed to leave at 8..."
-            />
-            <Textarea
-              label="their side"
-              value={sideB}
-              onChange={setSideB}
-              placeholder="She knew I needed more time..."
-            />
-          </div>
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="flex flex-col gap-6 flex-1">
+            <div className="flex gap-3">
+              <Textarea
+                label="your side"
+                value={sideA}
+                onChange={setSideA}
+                placeholder="I said we agreed to leave at 8..."
+              />
+              <Textarea
+                label="their side"
+                value={sideB}
+                onChange={setSideB}
+                placeholder="She knew I needed more time..."
+              />
+            </div>
 
-          <button
-            type="submit"
-            disabled={isDisabled}
-            className={`
+            <button
+              type="submit"
+              disabled={isDisabled}
+              className={`
               w-full py-4 rounded-xl text-base font-semibold text-white
               transition-all duration-150
               ${
@@ -164,11 +169,11 @@ export function InputScreen({ onSubmit }) {
                   : "bg-[#7c5cfc] hover:brightness-110 active:scale-[0.98]"
               }
             `}
-          >
-            settle it
-          </button>
-        </form>
-      </div>
+            >
+              settle it
+            </button>
+          </form>
+        </div>
       </div>
 
       <p className="text-center text-xs text-zinc-400 dark:text-zinc-600 pb-20 px-5">

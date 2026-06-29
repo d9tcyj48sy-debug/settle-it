@@ -28,12 +28,15 @@ function AlertIcon() {
 
 export function ErrorScreen({ errorType, onRetry, onStartOver }) {
   const message = ERROR_COPY[errorType] ?? ERROR_COPY.unknown;
-  const canRetry = errorType !== "content_rejected" && errorType !== "invalid_request";
+  const canRetry =
+    errorType !== "content_rejected" && errorType !== "invalid_request";
 
   return (
-    <div className="min-h-[100dvh] bg-white dark:bg-zinc-950 flex justify-center items-center transition-colors duration-200" style={{ paddingTop: "env(safe-area-inset-top)" }}>
+    <div
+      className="min-h-[100dvh] bg-white dark:bg-zinc-950 flex justify-center items-center transition-colors duration-200"
+      style={{ paddingTop: "env(safe-area-inset-top)" }}
+    >
       <div className="w-full max-w-[480px] flex flex-col items-center px-5 py-10 pb-28 gap-8 text-center">
-
         <span className="text-zinc-400 dark:text-zinc-600">
           <AlertIcon />
         </span>
@@ -58,7 +61,6 @@ export function ErrorScreen({ errorType, onRetry, onStartOver }) {
             start over
           </button>
         </div>
-
       </div>
     </div>
   );
