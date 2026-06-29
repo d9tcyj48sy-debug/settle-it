@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { shareVerdict } from "../services/shareCard";
 
 const ANIM_DURATION = 1000;
 
@@ -38,7 +39,10 @@ export function VerdictScreen({ verdict, onNewSettle }) {
   }, [sideAPercentage]);
 
   function handleShare() {
-    console.log("verdict:", verdict);
+    shareVerdict(verdict).catch((err) => {
+      // User cancelled the share sheet — not an error worth surfacing
+      if (err?.name !== "AbortError") console.error("Share failed:", err);
+    });
   }
 
   return (
