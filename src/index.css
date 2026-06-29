@@ -6,3 +6,12 @@ html,
 body {
   background-color: #0e0e0f;
 }
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
