@@ -78,3 +78,15 @@
 .splash-anim {
   animation: splash-reveal 1050ms linear forwards;
 }
+
+@keyframes shimmer-slide {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+.loading-shimmer {
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  animation: shimmer-slide 2.2s ease-in-out infinite;
+}
