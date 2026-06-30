@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTheme } from "../context/useTheme";
 import { HistoryIcon } from "../components/Icons";
 
@@ -95,10 +95,18 @@ function Textarea({ label, value, onChange, placeholder, autoFocus }) {
   );
 }
 
-export function InputScreen({ onSubmit, argueBetter }) {
+export function InputScreen({ onSubmit, argueBetter, dirtyCheckRef }) {
   const [sideA, setSideA] = useState(() => argueBetter?.sideA ?? "");
   const [sideB, setSideB] = useState(() => argueBetter?.sideB ?? "");
   const { theme, setTheme } = useTheme();
+
+  // Keep parent's dirty-check ref in sync with the latest field values
+  useEffect(() => {
+    if (!dirtyCheckRef || !argueBetter) return;
+    dirtyCheckRef.current = () =>
+      sideA !== argueBetter.sideA || sideB !== argueBetter.sideB;
+    return () => { dirtyCheckRef.current = null; };
+  }, [sideA, sideB, dirtyCheckRef, argueBetter]);
 
   const isDark =
     theme === "dark" ||

@@ -28,6 +28,50 @@ function SplashScreen({ onComplete }) {
   );
 }
 
+function ConfirmModal({ title, message, confirmLabel, cancelLabel, onConfirm, onCancel }) {
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center px-5"
+      style={{ background: "rgba(0, 0, 0, 0.5)" }}
+      onClick={onCancel}
+    >
+      <div
+        className="w-full max-w-[320px] bg-white dark:bg-[#18181c] border border-zinc-200 dark:border-[#28282e] rounded-2xl p-5 flex flex-col gap-4 animate-fade-in"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex flex-col gap-1.5">
+          <p className="text-sm font-semibold text-zinc-900 dark:text-white">{title}</p>
+          {message && (
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">{message}</p>
+          )}
+        </div>
+        <div className="flex gap-2">
+          <button
+            onClick={onConfirm}
+            className="flex-1 border border-zinc-200 dark:border-[#28282e] text-zinc-700 dark:text-zinc-300 bg-transparent active:opacity-70 transition-opacity duration-100"
+            style={{ borderRadius: "14px", padding: "12px", fontSize: "12.5px", fontWeight: 500 }}
+          >
+            {confirmLabel}
+          </button>
+          <button
+            onClick={onCancel}
+            className="flex-1 text-white active:brightness-90 transition-all duration-100"
+            style={{
+              background: "linear-gradient(to bottom, #8463f7, #7350ed)",
+              borderRadius: "14px",
+              padding: "12px",
+              fontSize: "12.5px",
+              fontWeight: 500,
+            }}
+          >
+            {cancelLabel}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
   const [screen, setScreen] = useState("splash");
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -35,7 +79,9 @@ export default function App() {
   const [error, setError] = useState(null);
   const [lastSides, setLastSides] = useState({ sideA: "", sideB: "" });
   const [argueBetter, setArgueBetter] = useState(null);
+  const [confirmModal, setConfirmModal] = useState(null);
   const transitionRef = useRef(null);
+  const inputDirtyCheckRef = useRef(null);
 
   function navigate(nextScreen, setupFn) {
     if (transitionRef.current) clearTimeout(transitionRef.current);
@@ -83,6 +129,36 @@ export default function App() {
     });
   }
 
+  function handleHistoryNav() {
+    if (screen === "input" && argueBetter && inputDirtyCheckRef.current?.()) {
+      setConfirmModal({
+        title: "discard your edits?",
+        message: "you'll lose your changes to the arguments",
+        confirmLabel: "discard",
+        cancelLabel: "keep editing",
+        onConfirm: () => {
+          setConfirmModal(null);
+          navigate("history", () => setArgueBetter(null));
+        },
+      });
+      return;
+    }
+    if (screen === "verdict") {
+      setConfirmModal({
+        title: "leave this verdict?",
+        message: "you'll lose the option to argue better for this round",
+        confirmLabel: "leave",
+        cancelLabel: "stay",
+        onConfirm: () => {
+          setConfirmModal(null);
+          navigate("history");
+        },
+      });
+      return;
+    }
+    navigate("history");
+  }
+
   function handleStartOver() {
     navigate("input", () => {
       setVerdict(null);
@@ -104,7 +180,7 @@ export default function App() {
         }}
       >
         {screen === "splash" && <SplashScreen onComplete={() => setScreen("input")} />}
-        {screen === "input" && <InputScreen onSubmit={handleSubmit} argueBetter={argueBetter} />}
+        {screen === "input" && <InputScreen onSubmit={handleSubmit} argueBetter={argueBetter} dirtyCheckRef={inputDirtyCheckRef} />}
         {screen === "loading" && <LoadingScreen />}
         {screen === "verdict" && (
           <VerdictScreen
@@ -127,7 +203,13 @@ export default function App() {
         <BottomNav
           activeTab={activeTab}
           onSettle={() => navigate("input", () => setArgueBetter(null))}
-          onHistory={() => navigate("history")}
+          onHistory={handleHistoryNav}
+        />
+      )}
+      {confirmModal && (
+        <ConfirmModal
+          {...confirmModal}
+          onCancel={() => setConfirmModal(null)}
         />
       )}
     </>

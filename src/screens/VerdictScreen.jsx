@@ -9,7 +9,7 @@ function easeOutCubic(t) {
 }
 
 export function VerdictScreen({ verdict, onNewSettle, onArgueBetter }) {
-  const { sideAPercentage, sideBPercentage, ruling, topicLabel } = verdict;
+  const { sideAPercentage, ruling, topicLabel } = verdict;
 
   const [displayA, setDisplayA] = useState(50);
   const [displayB, setDisplayB] = useState(50);
@@ -35,12 +35,12 @@ export function VerdictScreen({ verdict, onNewSettle, onArgueBetter }) {
         setRulingVisible(true);
         if (sideAPercentage >= 85) {
           setCelebrating(true);
-          try { navigator.vibrate && navigator.vibrate([50, 50, 50, 50, 100]); } catch (_) {}
+          try { navigator.vibrate && navigator.vibrate([50, 50, 50, 50, 100]); } catch { /* Vibration API unavailable */ }
         }
       }
     }
 
-    try { navigator.vibrate && navigator.vibrate([40, 30, 60]); } catch (_) {}
+    try { navigator.vibrate && navigator.vibrate([40, 30, 60]); } catch { /* Vibration API unavailable */ }
 
     rafRef.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafRef.current);
