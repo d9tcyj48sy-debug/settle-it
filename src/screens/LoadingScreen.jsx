@@ -39,7 +39,7 @@ export function LoadingScreen() {
   return (
     <div className="min-h-[100dvh] bg-zinc-50 dark:bg-zinc-950 flex items-center justify-center transition-colors duration-200" style={{ paddingTop: "env(safe-area-inset-top)" }}>
       <div className="flex flex-col items-center gap-6 px-8 text-center">
-        <span style={{ color: "#7c5cfc" }}>
+        <span style={{ color: "var(--accent)" }}>
           <ScaleIcon size={48} />
         </span>
 

@@ -48,7 +48,7 @@ function Textarea({ label, value, onChange, placeholder, autoFocus }) {
           ${
             atLimit
               ? "border-red-500/60 focus:border-red-500"
-              : "border-zinc-200 dark:border-zinc-800 focus:border-[#7c5cfc]"
+              : "border-zinc-200 dark:border-zinc-800 focus:border-[var(--accent)]"
           }
         `}
       />
@@ -87,7 +87,7 @@ export function InputScreen({ onSubmit, argueBetter, dirtyCheckRef, onOpenSettin
           <header className="flex items-center justify-between mb-10">
             <h1 className="text-xl font-semibold tracking-tight text-zinc-900 dark:text-white">
               settle it
-              <span style={{ color: "#7c5cfc" }}>.</span>
+              <span style={{ color: "var(--accent)" }}>.</span>
             </h1>
             <button
               type="button"
@@ -104,12 +104,13 @@ export function InputScreen({ onSubmit, argueBetter, dirtyCheckRef, onOpenSettin
           <form onSubmit={handleSubmit} className="flex flex-col gap-6 flex-1">
             {argueBetter && (
               <span
-                className="inline-flex items-center gap-1 rounded-full self-start text-[#7c5cfc] dark:text-[#a78bfa]"
+                className="inline-flex items-center gap-1 rounded-full self-start"
                 style={{
                   fontSize: "11px",
                   padding: "4px 10px",
-                  background: "#7c5cfc1a",
-                  border: "1px solid #7c5cfc40",
+                  color: "var(--accent)",
+                  background: "var(--accent-dim)",
+                  border: "1px solid var(--accent-border)",
                 }}
               >
                 <HistoryIcon size={10} />
@@ -140,8 +141,8 @@ export function InputScreen({ onSubmit, argueBetter, dirtyCheckRef, onOpenSettin
               transition-all duration-150
               ${
                 isDisabled
-                  ? "opacity-30 cursor-not-allowed bg-[#7c5cfc]"
-                  : "bg-[#7c5cfc] hover:brightness-110 active:scale-[0.98]"
+                  ? "opacity-30 cursor-not-allowed bg-[var(--accent)]"
+                  : "bg-[var(--accent)] hover:brightness-110 active:scale-[0.98]"
               }
             `}
             >

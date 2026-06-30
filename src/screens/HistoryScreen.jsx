@@ -310,18 +310,15 @@ function HistoryEntry({
           <div className="flex items-center gap-2">
             <span
               className="text-lg font-bold tabular-nums"
-              style={{ color: won ? "#7c5cfc" : undefined }}
+              style={{ color: won ? "var(--accent)" : undefined }}
             >
               <span className={won ? "" : "text-red-500"}>
                 {sideAPercentage}%
               </span>
             </span>
             <span
-              className={`text-xs font-semibold px-1.5 py-0.5 rounded ${
-                won
-                  ? "bg-[#7c5cfc]/10 text-[#7c5cfc]"
-                  : "bg-red-500/10 text-red-500"
-              }`}
+              className={`text-xs font-semibold px-1.5 py-0.5 rounded ${won ? "" : "bg-red-500/10 text-red-500"}`}
+              style={won ? { background: "var(--accent-dim)", color: "var(--accent)" } : undefined}
             >
               {won ? "won" : "lost"}
             </span>
@@ -357,7 +354,7 @@ function HistoryEntry({
               <button
                 onClick={handleShare}
                 aria-label="Share this verdict"
-                className="p-1.5 rounded-lg text-zinc-400 dark:text-zinc-500 hover:text-[#7c5cfc] transition-colors"
+                className="p-1.5 rounded-lg text-zinc-400 dark:text-zinc-500 hover:text-[var(--accent)] transition-colors"
                 style={{ WebkitTapHighlightColor: "transparent" }}
               >
                 <ShareIcon size={16} />
@@ -411,7 +408,7 @@ export function HistoryScreen() {
     >
       <div className="max-w-[480px] mx-auto px-5 pt-4 pb-24">
         <h1 className="text-xl font-semibold tracking-tight text-zinc-900 dark:text-white mb-6">
-          settle it<span style={{ color: "#7c5cfc" }}>.</span>
+          settle it<span style={{ color: "var(--accent)" }}>.</span>
         </h1>
 
         <StreakCard streak={streak} />

@@ -3,6 +3,7 @@ const KEYS = {
   streak: "settleit_streak",
   theme: "settleit_theme",
   sound: "settleit_sound",
+  accent: "settleit_accent_theme",
 };
 
 function read(key, fallback) {
@@ -79,4 +80,13 @@ export function setSoundPreference(enabled) {
 // Reset streak to zero (used by clear all history)
 export function resetStreak() {
   write(KEYS.streak, { current: 0, best: 0 });
+}
+
+// Accent theme — "purple" | "forest"
+export function getAccentTheme() {
+  return read(KEYS.accent, "purple");
+}
+
+export function setAccentTheme(theme) {
+  write(KEYS.accent, theme);
 }

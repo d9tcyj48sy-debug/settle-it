@@ -1,6 +1,6 @@
 import { ScaleIcon, ClockIcon } from "./Icons";
 
-const ACCENT = "#7c5cfc";
+const ACCENT = "var(--accent)";
 
 function NavTab({ label, active, onClick, children }) {
   return (

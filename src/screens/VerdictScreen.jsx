@@ -61,7 +61,7 @@ export function VerdictScreen({ verdict, onNewSettle, onArgueBetter }) {
 
         {/* App name */}
         <h1 className="text-xl font-semibold tracking-tight text-zinc-900 dark:text-white">
-          settle it<span style={{ color: "#7c5cfc" }}>.</span>
+          settle it<span style={{ color: "var(--accent)" }}>.</span>
         </h1>
 
         {/* Score block */}
@@ -77,12 +77,13 @@ export function VerdictScreen({ verdict, onNewSettle, onArgueBetter }) {
             <div className="flex flex-col">
               {celebrating && (
                 <span
-                  className="inline-flex items-center gap-1 rounded-full animate-fade-in mb-3 self-start text-[#7c5cfc] dark:text-[#a78bfa]"
+                  className="inline-flex items-center gap-1 rounded-full animate-fade-in mb-3 self-start"
                   style={{
                     fontSize: "11px",
                     padding: "4px 10px",
-                    background: "#7c5cfc1a",
-                    border: "1px solid #7c5cfc40",
+                    color: "var(--accent)",
+                    background: "var(--accent-dim)",
+                    border: "1px solid var(--accent-border)",
                   }}
                 >
                   <BoltIcon size={10} />
@@ -91,7 +92,7 @@ export function VerdictScreen({ verdict, onNewSettle, onArgueBetter }) {
               )}
               <span
                 className={`text-7xl font-bold tabular-nums leading-none${celebrating ? " celebrate-glow" : ""}`}
-                style={{ color: "#7c5cfc" }}
+                style={{ color: "var(--accent)" }}
               >
                 {displayA}
                 <span className="text-3xl font-semibold">%</span>
@@ -118,7 +119,7 @@ export function VerdictScreen({ verdict, onNewSettle, onArgueBetter }) {
               className={`h-full rounded-full${celebrating ? " celebrate-meter" : ""}`}
               style={{
                 width: `${displayA}%`,
-                background: "linear-gradient(to right, #6d4ff0, #8b6ef5)",
+                background: "linear-gradient(to right, var(--accent-meter-from), var(--accent-meter-to))",
                 transition: "none",
               }}
             />
@@ -146,7 +147,7 @@ export function VerdictScreen({ verdict, onNewSettle, onArgueBetter }) {
               onClick={onArgueBetter}
               className="flex-1 flex items-center justify-center gap-1.5 text-white active:brightness-90 transition-all duration-100"
               style={{
-                background: "linear-gradient(to bottom, #8463f7, #7350ed)",
+                background: "linear-gradient(to bottom, var(--accent-g-from), var(--accent-g-to))",
                 borderRadius: "14px",
                 padding: "13px",
                 fontSize: "12.5px",

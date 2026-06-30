@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTheme } from "../context/useTheme";
+import { useAccentTheme } from "../context/useAccentTheme";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -59,7 +60,7 @@ function Toggle({ on, onToggle }) {
         width: 44,
         height: 26,
         borderRadius: 13,
-        background: on ? "#7c5cfc" : undefined,
+        background: on ? "var(--accent)" : undefined,
         transition: "background 200ms",
         border: "none",
         cursor: "pointer",
@@ -167,7 +168,7 @@ function ConfirmModal({ title, message, confirmLabel, cancelLabel, onConfirm, on
             onClick={onCancel}
             className="flex-1 text-white active:brightness-90 transition-all duration-100"
             style={{
-              background: "linear-gradient(to bottom, #8463f7, #7350ed)",
+              background: "linear-gradient(to bottom, var(--accent-g-from), var(--accent-g-to))",
               borderRadius: "14px",
               padding: "12px",
               fontSize: "12.5px",
@@ -197,8 +198,11 @@ function ColorSwatch({ color }) {
   );
 }
 
+const ACCENT_LABELS = { purple: "default purple", forest: "forest green" };
+
 export function SettingsScreen({ onBack, onOpenThemePicker }) {
   const { theme, setTheme } = useTheme();
+  const { accentTheme } = useAccentTheme();
   const [sound, setSound] = useState(getSoundPreference);
   const [showConfirm, setShowConfirm] = useState(false);
   const [cleared, setCleared] = useState(false);
@@ -261,9 +265,9 @@ export function SettingsScreen({ onBack, onOpenThemePicker }) {
             <SectionLabel>theme</SectionLabel>
             <Card>
               <TappableRow
-                icon={<ColorSwatch color="#7c5cfc" />}
-                label="default purple"
-                subtitle="1 theme available"
+                icon={<ColorSwatch color="var(--accent)" />}
+                label={ACCENT_LABELS[accentTheme] ?? "default purple"}
+                subtitle="2 themes available"
                 right={<ChevronRightIcon size={16} />}
                 onClick={onOpenThemePicker}
               />

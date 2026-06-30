@@ -49,14 +49,14 @@ export function ErrorScreen({ errorType, onRetry, onStartOver }) {
           {canRetry && (
             <button
               onClick={onRetry}
-              className="w-full py-4 rounded-xl text-base font-semibold bg-[#7c5cfc] text-white hover:brightness-110 active:scale-[0.98] transition-all duration-150"
+              className="w-full py-4 rounded-xl text-base font-semibold bg-[var(--accent)] text-white hover:brightness-110 active:scale-[0.98] transition-all duration-150"
             >
               retry
             </button>
           )}
           <button
             onClick={onStartOver}
-            className="w-full py-4 rounded-xl text-base font-semibold border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:border-[#7c5cfc] hover:text-[#7c5cfc] transition-colors"
+            className="w-full py-4 rounded-xl text-base font-semibold border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors"
           >
             start over
           </button>

@@ -1,3 +1,28 @@
+/* ── Accent theme tokens ────────────────────────────────────────────────── */
+:root {
+  --accent: #7c5cfc;
+  --accent-dim: rgba(124, 92, 252, 0.1);
+  --accent-border: rgba(124, 92, 252, 0.25);
+  --accent-glow-strong: rgba(124, 92, 252, 0.85);
+  --accent-glow-soft: rgba(124, 92, 252, 0.4);
+  --accent-g-from: #8463f7;
+  --accent-g-to: #7350ed;
+  --accent-meter-from: #6d4ff0;
+  --accent-meter-to: #8b6ef5;
+}
+
+[data-accent="forest"] {
+  --accent: #3ba373;
+  --accent-dim: rgba(59, 163, 115, 0.1);
+  --accent-border: rgba(59, 163, 115, 0.25);
+  --accent-glow-strong: rgba(59, 163, 115, 0.85);
+  --accent-glow-soft: rgba(59, 163, 115, 0.4);
+  --accent-g-from: #42b57c;
+  --accent-g-to: #2e9965;
+  --accent-meter-from: #2d8f5f;
+  --accent-meter-to: #4cbf87;
+}
+
 @keyframes dot-bounce {
   0%, 80%, 100% {
     transform: translateY(0);
@@ -24,7 +49,7 @@
 
 @keyframes celebrate-glow {
   0%   { text-shadow: none; }
-  40%  { text-shadow: 0 0 18px rgba(124, 92, 252, 0.85), 0 0 36px rgba(124, 92, 252, 0.4); }
+  40%  { text-shadow: 0 0 18px var(--accent-glow-strong), 0 0 36px var(--accent-glow-soft); }
   100% { text-shadow: none; }
 }
 

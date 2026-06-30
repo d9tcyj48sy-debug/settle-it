@@ -1,7 +1,9 @@
+import { getAccentTheme } from "./storageService";
+
 const SIZE = 1080;
 const PAD = 80;
 const CONTENT_W = SIZE - PAD * 2;
-const PURPLE = "#7c5cfc";
+const ACCENT_COLORS = { purple: "#7c5cfc", forest: "#3ba373" };
 const FONT = '-apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif';
 
 function wrapText(ctx, text, x, y, maxWidth, lineHeight, maxLines = 4) {
@@ -55,6 +57,7 @@ function canvasToBlob(canvas) {
 
 function drawCard(ctx, verdict) {
   const { topicLabel, sideAPercentage, sideBPercentage, ruling } = verdict;
+  const ACCENT = ACCENT_COLORS[getAccentTheme()] ?? ACCENT_COLORS.purple;
 
   // ── Background ──────────────────────────────────────────────────────────
   ctx.fillStyle = "#0e0e0f";
@@ -67,7 +70,7 @@ function drawCard(ctx, verdict) {
   const wordmark = "settle it";
   ctx.fillText(wordmark, PAD, 132);
   const wordmarkW = ctx.measureText(wordmark).width;
-  ctx.fillStyle = PURPLE;
+  ctx.fillStyle = ACCENT;
   ctx.fillText(".", PAD + wordmarkW, 132);
 
   // ── Topic label ──────────────────────────────────────────────────────────
@@ -81,7 +84,7 @@ function drawCard(ctx, verdict) {
   const PCT_SIZE = 86;
 
   // Side A (you) — purple, left
-  ctx.fillStyle = PURPLE;
+  ctx.fillStyle = ACCENT;
   ctx.font = `700 ${NUM_SIZE}px ${FONT}`;
   const aStr = String(sideAPercentage);
   ctx.fillText(aStr, PAD, NUM_Y);
@@ -119,7 +122,7 @@ function drawCard(ctx, verdict) {
   ctx.fillStyle = "#27272a";
   roundFill(ctx, PAD, METER_Y, CONTENT_W, METER_H, METER_H / 2);
 
-  ctx.fillStyle = PURPLE;
+  ctx.fillStyle = ACCENT;
   roundFill(ctx, PAD, METER_Y, fillW, METER_H, METER_H / 2);
 
   // ── Ruling (first sentence, wrapped) ─────────────────────────────────

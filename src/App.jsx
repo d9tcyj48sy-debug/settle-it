@@ -24,7 +24,7 @@ function SplashScreen({ onComplete }) {
   return (
     <div className="splash-anim min-h-[100dvh] bg-white dark:bg-[#0e0e0f] flex items-center justify-center">
       <h1 className="text-xl font-semibold tracking-tight text-zinc-900 dark:text-white">
-        settle it<span style={{ color: "#7c5cfc" }}>.</span>
+        settle it<span style={{ color: "var(--accent)" }}>.</span>
       </h1>
     </div>
   );
@@ -59,7 +59,7 @@ function ConfirmModal({ title, message, confirmLabel, cancelLabel, onConfirm, on
             onClick={onCancel}
             className="flex-1 text-white active:brightness-90 transition-all duration-100"
             style={{
-              background: "linear-gradient(to bottom, #8463f7, #7350ed)",
+              background: "linear-gradient(to bottom, var(--accent-g-from), var(--accent-g-to))",
               borderRadius: "14px",
               padding: "12px",
               fontSize: "12.5px",
