@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTheme } from "../context/useTheme";
+import { HistoryIcon } from "../components/Icons";
 
 const MAX = 500;
 const WARN = 400;
@@ -60,7 +61,7 @@ function CharCount({ count }) {
   );
 }
 
-function Textarea({ label, value, onChange, placeholder }) {
+function Textarea({ label, value, onChange, placeholder, autoFocus }) {
   const atLimit = value.length >= MAX;
   return (
     <div className="flex flex-col gap-2 flex-1 min-w-0">
@@ -74,6 +75,7 @@ function Textarea({ label, value, onChange, placeholder }) {
         value={value}
         onChange={(e) => onChange(e.target.value.slice(0, MAX))}
         placeholder={placeholder}
+        autoFocus={autoFocus}
         rows={8}
         style={{ minHeight: "160px", touchAction: "manipulation" }}
         className={`
@@ -93,9 +95,9 @@ function Textarea({ label, value, onChange, placeholder }) {
   );
 }
 
-export function InputScreen({ onSubmit }) {
-  const [sideA, setSideA] = useState("");
-  const [sideB, setSideB] = useState("");
+export function InputScreen({ onSubmit, argueBetter }) {
+  const [sideA, setSideA] = useState(() => argueBetter?.sideA ?? "");
+  const [sideB, setSideB] = useState(() => argueBetter?.sideB ?? "");
   const { theme, setTheme } = useTheme();
 
   const isDark =
@@ -143,12 +145,27 @@ export function InputScreen({ onSubmit }) {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="flex flex-col gap-6 flex-1">
+            {argueBetter && (
+              <span
+                className="inline-flex items-center gap-1 rounded-full self-start text-[#7c5cfc] dark:text-[#a78bfa]"
+                style={{
+                  fontSize: "11px",
+                  padding: "4px 10px",
+                  background: "#7c5cfc1a",
+                  border: "1px solid #7c5cfc40",
+                }}
+              >
+                <HistoryIcon size={10} />
+                round 2: {argueBetter.topicLabel}
+              </span>
+            )}
             <div className="flex gap-3">
               <Textarea
                 label="your side"
                 value={sideA}
                 onChange={setSideA}
                 placeholder="I said we agreed to leave at 8..."
+                autoFocus={!!argueBetter}
               />
               <Textarea
                 label="their side"

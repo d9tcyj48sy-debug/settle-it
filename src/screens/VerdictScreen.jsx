@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { shareVerdict } from "../services/shareCard";
-import { BoltIcon } from "../components/Icons";
+import { BoltIcon, EditIcon, ShareIcon } from "../components/Icons";
 
 const ANIM_DURATION = 1000;
 
@@ -8,7 +8,7 @@ function easeOutCubic(t) {
   return 1 - Math.pow(1 - t, 3);
 }
 
-export function VerdictScreen({ verdict, onNewSettle }) {
+export function VerdictScreen({ verdict, onNewSettle, onArgueBetter }) {
   const { sideAPercentage, sideBPercentage, ruling, topicLabel } = verdict;
 
   const [displayA, setDisplayA] = useState(50);
@@ -116,7 +116,7 @@ export function VerdictScreen({ verdict, onNewSettle }) {
               className={`h-full rounded-full${celebrating ? " celebrate-meter" : ""}`}
               style={{
                 width: `${displayA}%`,
-                backgroundColor: "#7c5cfc",
+                background: "linear-gradient(to right, #6d4ff0, #8b6ef5)",
                 transition: "none",
               }}
             />
@@ -137,16 +137,39 @@ export function VerdictScreen({ verdict, onNewSettle }) {
         </div>
 
         {/* Actions */}
-        <div className="flex flex-col gap-3">
-          <button
-            onClick={handleShare}
-            className="w-full py-4 rounded-xl text-base font-semibold border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:border-[#7c5cfc] hover:text-[#7c5cfc] transition-colors"
-          >
-            share
-          </button>
+        <div className="flex flex-col gap-1">
+          {/* Row 1: argue better + share */}
+          <div className="flex gap-2">
+            <button
+              onClick={onArgueBetter}
+              className="flex-1 flex items-center justify-center gap-1.5 text-white active:brightness-90 transition-all duration-100"
+              style={{
+                background: "linear-gradient(to bottom, #8463f7, #7350ed)",
+                borderRadius: "14px",
+                padding: "13px",
+                fontSize: "12.5px",
+                fontWeight: 500,
+                letterSpacing: "-0.1px",
+              }}
+            >
+              <EditIcon size={13} />
+              argue better
+            </button>
+            <button
+              onClick={handleShare}
+              aria-label="Share verdict"
+              className="flex items-center justify-center shrink-0 bg-white dark:bg-[#18181c] border border-zinc-200 dark:border-[#28282e] text-zinc-500 dark:text-zinc-400 active:brightness-90 transition-all duration-100"
+              style={{ width: 46, height: 46, borderRadius: "14px" }}
+            >
+              <ShareIcon size={15} />
+            </button>
+          </div>
+
+          {/* Row 2: new settle text link */}
           <button
             onClick={onNewSettle}
-            className="w-full py-4 rounded-xl text-base font-semibold bg-[#7c5cfc] text-white hover:brightness-110 active:scale-[0.98] transition-all duration-150"
+            className="w-full text-center text-zinc-600 dark:text-zinc-500 bg-transparent border-none cursor-pointer"
+            style={{ fontSize: "11px", padding: "4px" }}
           >
             new settle
           </button>

@@ -34,6 +34,7 @@ export default function App() {
   const [verdict, setVerdict] = useState(null);
   const [error, setError] = useState(null);
   const [lastSides, setLastSides] = useState({ sideA: "", sideB: "" });
+  const [argueBetter, setArgueBetter] = useState(null);
   const transitionRef = useRef(null);
 
   function navigate(nextScreen, setupFn) {
@@ -72,11 +73,22 @@ export default function App() {
     }
   }
 
+  function handleArgueBetter() {
+    navigate("input", () => {
+      setArgueBetter({
+        sideA: lastSides.sideA,
+        sideB: lastSides.sideB,
+        topicLabel: verdict.topicLabel,
+      });
+    });
+  }
+
   function handleStartOver() {
     navigate("input", () => {
       setVerdict(null);
       setError(null);
       setLastSides({ sideA: "", sideB: "" });
+      setArgueBetter(null);
     });
   }
 
@@ -92,10 +104,14 @@ export default function App() {
         }}
       >
         {screen === "splash" && <SplashScreen onComplete={() => setScreen("input")} />}
-        {screen === "input" && <InputScreen onSubmit={handleSubmit} />}
+        {screen === "input" && <InputScreen onSubmit={handleSubmit} argueBetter={argueBetter} />}
         {screen === "loading" && <LoadingScreen />}
         {screen === "verdict" && (
-          <VerdictScreen verdict={verdict} onNewSettle={handleStartOver} />
+          <VerdictScreen
+            verdict={verdict}
+            onNewSettle={handleStartOver}
+            onArgueBetter={handleArgueBetter}
+          />
         )}
         {screen === "history" && <HistoryScreen />}
         {screen === "error" && (
@@ -110,7 +126,7 @@ export default function App() {
       {showNav && (
         <BottomNav
           activeTab={activeTab}
-          onSettle={() => navigate("input")}
+          onSettle={() => navigate("input", () => setArgueBetter(null))}
           onHistory={() => navigate("history")}
         />
       )}
