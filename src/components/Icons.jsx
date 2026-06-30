@@ -59,6 +59,24 @@ export function ShareIcon({ size = 24 }) {
   );
 }
 
+export function BoltIcon({ size = 12 }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+    </svg>
+  );
+}
+
 export function ChevronDownIcon({ size = 16 }) {
   return (
     <svg

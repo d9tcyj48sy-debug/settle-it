@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { shareVerdict } from "../services/shareCard";
+import { BoltIcon } from "../components/Icons";
 
 const ANIM_DURATION = 1000;
 
@@ -72,6 +73,20 @@ export function VerdictScreen({ verdict, onNewSettle }) {
           {/* Percentages */}
           <div className="flex items-end justify-between">
             <div className="flex flex-col">
+              {celebrating && (
+                <span
+                  className="inline-flex items-center gap-1 rounded-full animate-fade-in mb-3 self-start text-[#7c5cfc] dark:text-[#a78bfa]"
+                  style={{
+                    fontSize: "11px",
+                    padding: "4px 10px",
+                    background: "#7c5cfc1a",
+                    border: "1px solid #7c5cfc40",
+                  }}
+                >
+                  <BoltIcon size={10} />
+                  {sideAPercentage >= 95 ? "total domination" : "decisive win"}
+                </span>
+              )}
               <span
                 className={`text-7xl font-bold tabular-nums leading-none${celebrating ? " celebrate-glow" : ""}`}
                 style={{ color: "#7c5cfc" }}
