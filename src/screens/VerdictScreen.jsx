@@ -13,6 +13,7 @@ export function VerdictScreen({ verdict, onNewSettle }) {
   const [displayA, setDisplayA] = useState(50);
   const [displayB, setDisplayB] = useState(50);
   const [rulingVisible, setRulingVisible] = useState(false);
+  const [celebrating, setCelebrating] = useState(false);
   const rafRef = useRef(null);
 
   useEffect(() => {
@@ -31,6 +32,10 @@ export function VerdictScreen({ verdict, onNewSettle }) {
         rafRef.current = requestAnimationFrame(tick);
       } else {
         setRulingVisible(true);
+        if (sideAPercentage >= 85) {
+          setCelebrating(true);
+          try { navigator.vibrate && navigator.vibrate([50, 50, 50, 50, 100]); } catch (_) {}
+        }
       }
     }
 
@@ -68,7 +73,7 @@ export function VerdictScreen({ verdict, onNewSettle }) {
           <div className="flex items-end justify-between">
             <div className="flex flex-col">
               <span
-                className="text-7xl font-bold tabular-nums leading-none"
+                className={`text-7xl font-bold tabular-nums leading-none${celebrating ? " celebrate-glow" : ""}`}
                 style={{ color: "#7c5cfc" }}
               >
                 {displayA}
@@ -93,7 +98,7 @@ export function VerdictScreen({ verdict, onNewSettle }) {
           {/* Meter bar */}
           <div className="h-2 rounded-full bg-zinc-200 dark:bg-zinc-800 overflow-hidden">
             <div
-              className="h-full rounded-full"
+              className={`h-full rounded-full${celebrating ? " celebrate-meter" : ""}`}
               style={{
                 width: `${displayA}%`,
                 backgroundColor: "#7c5cfc",
