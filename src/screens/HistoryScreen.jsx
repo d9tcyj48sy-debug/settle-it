@@ -73,6 +73,14 @@ function HistoryEntry({ entry, isExpanded, onToggle, onDelete, isSwipeOpen, onSw
     if (!el) return;
     const t = touchState.current;
 
+    function setPressedBg() {
+      const isDark = document.documentElement.classList.contains("dark");
+      el.style.backgroundColor = isDark ? "rgb(39 39 42)" : "rgb(244 244 245)";
+    }
+    function clearPressedBg() {
+      el.style.backgroundColor = "";
+    }
+
     function snapTo(offset, animated) {
       if (animated) {
         el.style.transition = "transform 0.22s cubic-bezier(0.4, 0, 0.2, 1)";
@@ -91,7 +99,8 @@ function HistoryEntry({ entry, isExpanded, onToggle, onDelete, isSwipeOpen, onSw
       t.isSliding = false;
       t.directionDetermined = false;
       t.wasSwiping = false;
-      el.style.transition = "none"; // kill any running animation
+      el.style.transition = "none";
+      setPressedBg();
     }
 
     function onTouchMove(e) {
@@ -104,8 +113,10 @@ function HistoryEntry({ entry, isExpanded, onToggle, onDelete, isSwipeOpen, onSw
         t.directionDetermined = true;
         if (Math.abs(dx) >= Math.abs(dy)) {
           t.isSliding = true;
+          clearPressedBg(); // swiping, not tapping
         } else {
-          el.style.transition = ""; // restore for vertical scroll
+          clearPressedBg(); // scrolling, not tapping
+          el.style.transition = "";
           return;
         }
       }
@@ -121,8 +132,9 @@ function HistoryEntry({ entry, isExpanded, onToggle, onDelete, isSwipeOpen, onSw
     }
 
     function onTouchEnd() {
+      clearPressedBg(); // always clear on lift, before any transition is restored
       if (!t.isSliding) {
-        el.style.transition = ""; // restore from onTouchStart's 'none'
+        el.style.transition = "";
         return;
       }
       const wasOpen = t.isOpen;
@@ -137,14 +149,23 @@ function HistoryEntry({ entry, isExpanded, onToggle, onDelete, isSwipeOpen, onSw
       }
     }
 
+    function onTouchCancel() {
+      clearPressedBg();
+      el.style.transition = "";
+      t.isSliding = false;
+      t.directionDetermined = false;
+    }
+
     el.addEventListener("touchstart", onTouchStart, { passive: true });
     el.addEventListener("touchmove", onTouchMove, { passive: false });
     el.addEventListener("touchend", onTouchEnd, { passive: true });
+    el.addEventListener("touchcancel", onTouchCancel, { passive: true });
 
     return () => {
       el.removeEventListener("touchstart", onTouchStart);
       el.removeEventListener("touchmove", onTouchMove);
       el.removeEventListener("touchend", onTouchEnd);
+      el.removeEventListener("touchcancel", onTouchCancel);
     };
   }, []); // no deps — all mutable state lives in refs
 
@@ -199,7 +220,7 @@ function HistoryEntry({ entry, isExpanded, onToggle, onDelete, isSwipeOpen, onSw
       <div
         ref={contentRef}
         onClick={handleClick}
-        className="relative px-4 py-3 bg-zinc-50 dark:bg-zinc-900 cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+        className="relative px-4 py-3 bg-zinc-50 dark:bg-zinc-900 cursor-pointer"
         style={{ WebkitTapHighlightColor: "transparent" }}
       >
         {/* Top row */}
