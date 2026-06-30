@@ -38,6 +38,11 @@ function Textarea({ label, value, onChange, placeholder, autoFocus }) {
         onChange={(e) => onChange(e.target.value.slice(0, MAX))}
         placeholder={placeholder}
         autoFocus={autoFocus}
+        autoCapitalize="sentences"
+        autoCorrect="on"
+        spellCheck={true}
+        inputMode="text"
+        enterKeyHint="done"
         rows={8}
         style={{ minHeight: "160px", touchAction: "manipulation" }}
         className={`
