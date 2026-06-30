@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { InputScreen } from "./screens/InputScreen";
 import { LoadingScreen } from "./screens/LoadingScreen";
 import { VerdictScreen } from "./screens/VerdictScreen";
@@ -12,8 +12,24 @@ import "./App.css";
 const MIN_LOADING_MS = 1500;
 const FADE_MS = 150;
 
+function SplashScreen({ onComplete }) {
+  const cb = useRef(onComplete);
+  useEffect(() => {
+    const timer = setTimeout(() => cb.current(), 1050);
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <div className="splash-anim min-h-[100dvh] bg-white dark:bg-[#0e0e0f] flex items-center justify-center">
+      <h1 className="text-xl font-semibold tracking-tight text-zinc-900 dark:text-white">
+        settle it<span style={{ color: "#7c5cfc" }}>.</span>
+      </h1>
+    </div>
+  );
+}
+
 export default function App() {
-  const [screen, setScreen] = useState("input");
+  const [screen, setScreen] = useState("splash");
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [verdict, setVerdict] = useState(null);
   const [error, setError] = useState(null);
@@ -64,7 +80,7 @@ export default function App() {
     });
   }
 
-  const showNav = screen !== "loading";
+  const showNav = screen !== "loading" && screen !== "splash";
   const activeTab = screen === "history" ? "history" : "settle";
 
   return (
@@ -75,6 +91,7 @@ export default function App() {
           transition: `opacity ${FADE_MS}ms ease`,
         }}
       >
+        {screen === "splash" && <SplashScreen onComplete={() => setScreen("input")} />}
         {screen === "input" && <InputScreen onSubmit={handleSubmit} />}
         {screen === "loading" && <LoadingScreen />}
         {screen === "verdict" && (

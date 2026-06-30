@@ -1,5 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { deleteVerdict, getHistory, getStreak } from "../services/storageService";
+import {
+  deleteVerdict,
+  getHistory,
+  getStreak,
+} from "../services/storageService";
 import { ChevronDownIcon, ShareIcon, TrashIcon } from "../components/Icons";
 import { shareVerdict } from "../services/shareCard";
 
@@ -10,7 +14,8 @@ function formatDate(isoString) {
   const diffDays = Math.floor((Date.now() - date) / 86_400_000);
   if (diffDays === 0) return "today";
   if (diffDays === 1) return "yesterday";
-  if (diffDays < 7) return date.toLocaleDateString(undefined, { weekday: "short" });
+  if (diffDays < 7)
+    return date.toLocaleDateString(undefined, { weekday: "short" });
   return date.toLocaleDateString(undefined, { month: "short", day: "numeric" });
 }
 
@@ -39,12 +44,21 @@ function StreakCard({ streak }) {
   );
 }
 
-function HistoryEntry({ entry, isExpanded, onToggle, onDelete, isSwipeOpen, onSwipeOpen, onSwipeClose }) {
+function HistoryEntry({
+  entry,
+  isExpanded,
+  onToggle,
+  onDelete,
+  isSwipeOpen,
+  onSwipeOpen,
+  onSwipeClose,
+}) {
   const { topicLabel, createdAt, sideAPercentage, ruling, won } = entry;
   const outerRef = useRef(null);
   const contentRef = useRef(null);
   const touchState = useRef({
-    startX: 0, startY: 0,
+    startX: 0,
+    startY: 0,
     currentOffset: 0,
     isSliding: false,
     isOpen: false,
@@ -53,7 +67,9 @@ function HistoryEntry({ entry, isExpanded, onToggle, onDelete, isSwipeOpen, onSw
   });
   // Keep callbacks fresh without re-running the touch listener effect
   const cb = useRef({ onSwipeOpen, onSwipeClose, onDelete });
-  useEffect(() => { cb.current = { onSwipeOpen, onSwipeClose, onDelete }; });
+  useEffect(() => {
+    cb.current = { onSwipeOpen, onSwipeClose, onDelete };
+  });
 
   // Close this entry when another entry opens
   useEffect(() => {
@@ -62,7 +78,13 @@ function HistoryEntry({ entry, isExpanded, onToggle, onDelete, isSwipeOpen, onSw
       if (!el) return;
       el.style.transition = "transform 0.22s cubic-bezier(0.4, 0, 0.2, 1)";
       el.style.transform = "translateX(0)";
-      el.addEventListener("transitionend", () => { el.style.transition = ""; }, { once: true });
+      el.addEventListener(
+        "transitionend",
+        () => {
+          el.style.transition = "";
+        },
+        { once: true },
+      );
       touchState.current.isOpen = false;
       touchState.current.currentOffset = 0;
     }
@@ -107,7 +129,13 @@ function HistoryEntry({ entry, isExpanded, onToggle, onDelete, isSwipeOpen, onSw
     function snapTo(offset, animated) {
       if (animated) {
         el.style.transition = "transform 0.22s cubic-bezier(0.4, 0, 0.2, 1)";
-        el.addEventListener("transitionend", () => { el.style.transition = ""; }, { once: true });
+        el.addEventListener(
+          "transitionend",
+          () => {
+            el.style.transition = "";
+          },
+          { once: true },
+        );
       } else {
         el.style.transition = "";
       }
@@ -210,7 +238,13 @@ function HistoryEntry({ entry, isExpanded, onToggle, onDelete, isSwipeOpen, onSw
       if (el) {
         el.style.transition = "transform 0.22s cubic-bezier(0.4, 0, 0.2, 1)";
         el.style.transform = "translateX(0)";
-        el.addEventListener("transitionend", () => { el.style.transition = ""; }, { once: true });
+        el.addEventListener(
+          "transitionend",
+          () => {
+            el.style.transition = "";
+          },
+          { once: true },
+        );
       }
       t.isOpen = false;
       t.currentOffset = 0;
@@ -242,7 +276,10 @@ function HistoryEntry({ entry, isExpanded, onToggle, onDelete, isSwipeOpen, onSw
         style={{ width: DELETE_WIDTH }}
       >
         <button
-          onClick={(e) => { e.stopPropagation(); cb.current.onDelete(entry.id); }}
+          onClick={(e) => {
+            e.stopPropagation();
+            cb.current.onDelete(entry.id);
+          }}
           className="w-full h-full flex items-center justify-center text-white"
           aria-label="Delete entry"
           style={{ WebkitTapHighlightColor: "transparent" }}
@@ -275,7 +312,9 @@ function HistoryEntry({ entry, isExpanded, onToggle, onDelete, isSwipeOpen, onSw
               className="text-lg font-bold tabular-nums"
               style={{ color: won ? "#7c5cfc" : undefined }}
             >
-              <span className={won ? "" : "text-red-500"}>{sideAPercentage}%</span>
+              <span className={won ? "" : "text-red-500"}>
+                {sideAPercentage}%
+              </span>
             </span>
             <span
               className={`text-xs font-semibold px-1.5 py-0.5 rounded ${
@@ -289,7 +328,9 @@ function HistoryEntry({ entry, isExpanded, onToggle, onDelete, isSwipeOpen, onSw
           </div>
           <span
             className="text-zinc-400 transition-transform duration-300"
-            style={{ transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)" }}
+            style={{
+              transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)",
+            }}
           >
             <ChevronDownIcon />
           </span>
@@ -304,7 +345,9 @@ function HistoryEntry({ entry, isExpanded, onToggle, onDelete, isSwipeOpen, onSw
             onClick={(e) => e.stopPropagation()}
             style={{
               opacity: isExpanded ? 1 : 0,
-              transition: isExpanded ? "opacity 150ms ease 300ms" : "opacity 0ms",
+              transition: isExpanded
+                ? "opacity 150ms ease 300ms"
+                : "opacity 0ms",
             }}
           >
             <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed pt-3 mt-3 border-t border-zinc-200 dark:border-zinc-800">
@@ -359,7 +402,9 @@ export function HistoryScreen() {
     setHistory((prev) => prev.filter((e) => e.id !== id));
     if (expandedId === id) setExpandedId(null);
     setOpenSwipeId(null);
-    try { navigator.vibrate && navigator.vibrate(30); } catch (_) {}
+    try {
+      navigator.vibrate && navigator.vibrate(30);
+    } catch (_) {}
   }
 
   return (
