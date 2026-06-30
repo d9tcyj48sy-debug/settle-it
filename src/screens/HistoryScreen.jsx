@@ -267,7 +267,7 @@ function HistoryEntry({
       className="relative rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800"
       style={{
         transition: "border-color 180ms ease",
-        borderColor: isExpanded ? "rgba(124, 92, 252, 0.33)" : undefined,
+        borderColor: isExpanded ? "var(--accent-border)" : undefined,
       }}
     >
       {/* Delete button revealed on swipe */}
