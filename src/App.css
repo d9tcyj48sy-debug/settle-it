@@ -9,6 +9,11 @@
   --accent-g-to: #7350ed;
   --accent-meter-from: #6d4ff0;
   --accent-meter-to: #8b6ef5;
+  --meter-empty: #e4e4e7;
+}
+
+.dark {
+  --meter-empty: #1e1e25;
 }
 
 [data-accent="forest"] {

@@ -114,16 +114,19 @@ function drawCard(ctx, verdict) {
   ctx.textAlign = "right";
   ctx.fillText("them", SIZE - PAD, LABEL_Y);
 
-  // ── Meter bar ─────────────────────────────────────────────────────────
+  // ── Segmented meter bar ───────────────────────────────────────────────
   const METER_Y = LABEL_Y + 50;
   const METER_H = 12;
-  const fillW = Math.max(METER_H, Math.round((sideAPercentage / 100) * CONTENT_W));
+  const SEG_GAP = 6;
+  const SEG_W = (CONTENT_W - SEG_GAP * 9) / 10;
+  const SEG_R = 4;
+  const filledSegs = Math.max(0, Math.min(10, Math.round(sideAPercentage / 10)));
 
-  ctx.fillStyle = "#27272a";
-  roundFill(ctx, PAD, METER_Y, CONTENT_W, METER_H, METER_H / 2);
-
-  ctx.fillStyle = ACCENT;
-  roundFill(ctx, PAD, METER_Y, fillW, METER_H, METER_H / 2);
+  for (let i = 0; i < 10; i++) {
+    const x = PAD + i * (SEG_W + SEG_GAP);
+    ctx.fillStyle = i < filledSegs ? ACCENT : "#27272a";
+    roundFill(ctx, x, METER_Y, SEG_W, METER_H, SEG_R);
+  }
 
   // ── Ruling (first sentence, wrapped) ─────────────────────────────────
   const match = ruling.match(/^[^.!?]*[.!?]/);

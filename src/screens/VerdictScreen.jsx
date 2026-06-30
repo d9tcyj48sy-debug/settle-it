@@ -117,16 +117,24 @@ export function VerdictScreen({ verdict, onNewSettle, onArgueBetter }) {
             </div>
           </div>
 
-          {/* Meter bar */}
-          <div className="h-2 rounded-full bg-zinc-200 dark:bg-zinc-800 overflow-hidden">
-            <div
-              className={`h-full rounded-full${celebrating ? " celebrate-meter" : ""}`}
-              style={{
-                width: `${displayA}%`,
-                background: "linear-gradient(to right, var(--accent-meter-from), var(--accent-meter-to))",
-                transition: "none",
-              }}
-            />
+          {/* Segmented meter bar */}
+          <div className="flex gap-[3px]">
+            {Array.from({ length: 10 }, (_, i) => {
+              const filled = i < Math.max(0, Math.min(10, Math.round(displayA / 10)));
+              return (
+                <div
+                  key={i}
+                  className={filled && celebrating ? "celebrate-meter" : ""}
+                  style={{
+                    flex: 1,
+                    height: 8,
+                    borderRadius: 2,
+                    backgroundColor: filled ? "var(--accent)" : "var(--meter-empty)",
+                    transition: "background-color 150ms ease",
+                  }}
+                />
+              );
+            })}
           </div>
         </div>
 
