@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useTheme } from "../context/useTheme";
 import { useAccentTheme } from "../context/useAccentTheme";
-import { pressIn, pressOut } from "../utils/touch";
+import { pressIn, pressOut, rowPressIn, rowPressOut } from "../utils/touch";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -127,9 +127,9 @@ function TappableRow({ icon, label, subtitle, right, onClick, danger }) {
     <button
       type="button"
       onClick={onClick}
-      onTouchStart={pressIn}
-      onTouchEnd={pressOut}
-      onTouchCancel={pressOut}
+      onTouchStart={rowPressIn}
+      onTouchEnd={rowPressOut}
+      onTouchCancel={rowPressOut}
       className="w-full flex items-center gap-3 px-4 py-3.5 text-left"
       style={{ WebkitTapHighlightColor: "transparent" }}
     >

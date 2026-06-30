@@ -1,6 +1,6 @@
 import { useAccentTheme } from "../context/useAccentTheme";
 import { ChevronLeftIcon, CheckIcon } from "../components/Icons";
-import { pressIn, pressOut } from "../utils/touch";
+import { pressIn, pressOut, rowPressIn, rowPressOut } from "../utils/touch";
 
 const THEMES = [
   { id: "purple", label: "default purple", color: "#7c5cfc", subtitle: "free" },
@@ -68,9 +68,9 @@ export function ThemePickerScreen({ onBack }) {
                   key={id}
                   type="button"
                   onClick={() => setAccentTheme(id)}
-                  onTouchStart={pressIn}
-                  onTouchEnd={pressOut}
-                  onTouchCancel={pressOut}
+                  onTouchStart={rowPressIn}
+                  onTouchEnd={rowPressOut}
+                  onTouchCancel={rowPressOut}
                   className="w-full flex items-center gap-3 px-4 py-3.5 text-left"
                   style={{ WebkitTapHighlightColor: "transparent" }}
                 >
