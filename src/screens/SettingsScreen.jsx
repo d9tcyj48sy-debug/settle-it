@@ -130,7 +130,7 @@ function TappableRow({ icon, label, subtitle, right, onClick, danger }) {
       onTouchStart={pressIn}
       onTouchEnd={pressOut}
       onTouchCancel={pressOut}
-      className="w-full flex items-center gap-3 px-4 py-3.5 text-left active:bg-zinc-100 dark:active:bg-zinc-800 transition-colors"
+      className="w-full flex items-center gap-3 px-4 py-3.5 text-left"
       style={{ WebkitTapHighlightColor: "transparent" }}
     >
       <span className={`shrink-0 ${danger ? "text-red-500" : "text-zinc-500 dark:text-zinc-400"}`}>

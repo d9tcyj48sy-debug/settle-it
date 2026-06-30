@@ -71,7 +71,7 @@ export function ThemePickerScreen({ onBack }) {
                   onTouchStart={pressIn}
                   onTouchEnd={pressOut}
                   onTouchCancel={pressOut}
-                  className="w-full flex items-center gap-3 px-4 py-3.5 text-left active:bg-zinc-100 dark:active:bg-zinc-800 transition-colors"
+                  className="w-full flex items-center gap-3 px-4 py-3.5 text-left"
                   style={{ WebkitTapHighlightColor: "transparent" }}
                 >
                   <ColorSwatch color={color} />
