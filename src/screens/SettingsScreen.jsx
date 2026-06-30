@@ -200,7 +200,7 @@ function ColorSwatch({ color }) {
 
 const ACCENT_LABELS = { purple: "default purple", forest: "forest green" };
 
-export function SettingsScreen({ onBack, onOpenThemePicker }) {
+export function SettingsScreen({ onBack, onOpenThemePicker, onOpenPrivacy }) {
   const { theme, setTheme } = useTheme();
   const { accentTheme } = useAccentTheme();
   const [sound, setSound] = useState(getSoundPreference);
@@ -294,7 +294,7 @@ export function SettingsScreen({ onBack, onOpenThemePicker }) {
                 icon={<ShieldIcon size={18} />}
                 label="privacy policy"
                 right={<ChevronRightIcon size={16} />}
-                onClick={() => window.open("/privacy", "_blank")}
+                onClick={onOpenPrivacy}
               />
               <TappableRow
                 icon={<TrashIcon size={18} />}

@@ -6,6 +6,7 @@ import { HistoryScreen } from "./screens/HistoryScreen";
 import { ErrorScreen } from "./screens/ErrorScreen";
 import { SettingsScreen } from "./screens/SettingsScreen";
 import { ThemePickerScreen } from "./screens/ThemePickerScreen";
+import { PrivacyScreen } from "./screens/PrivacyScreen";
 import { BottomNav } from "./components/BottomNav";
 import { getVerdict } from "./services/verdictService";
 import { addVerdict, updateStreak } from "./services/storageService";
@@ -187,7 +188,15 @@ export default function App() {
     navigate("settings");
   }
 
-  const showNav = screen !== "loading" && screen !== "splash" && screen !== "settings" && screen !== "themePicker";
+  function handleOpenPrivacy() {
+    navigate("privacy");
+  }
+
+  function handleClosePrivacy() {
+    navigate("settings");
+  }
+
+  const showNav = screen !== "loading" && screen !== "splash" && screen !== "settings" && screen !== "themePicker" && screen !== "privacy";
   const activeTab = screen === "history" ? "history" : "settle";
 
   return (
@@ -200,8 +209,9 @@ export default function App() {
       >
         {screen === "splash" && <SplashScreen onComplete={() => setScreen("input")} />}
         {screen === "input" && <InputScreen onSubmit={handleSubmit} argueBetter={argueBetter} dirtyCheckRef={inputDirtyCheckRef} onOpenSettings={handleOpenSettings} />}
-        {screen === "settings" && <SettingsScreen onBack={handleCloseSettings} onOpenThemePicker={handleOpenThemePicker} />}
+        {screen === "settings" && <SettingsScreen onBack={handleCloseSettings} onOpenThemePicker={handleOpenThemePicker} onOpenPrivacy={handleOpenPrivacy} />}
         {screen === "themePicker" && <ThemePickerScreen onBack={handleCloseThemePicker} />}
+        {screen === "privacy" && <PrivacyScreen onBack={handleClosePrivacy} />}
         {screen === "loading" && <LoadingScreen />}
         {screen === "verdict" && (
           <VerdictScreen
