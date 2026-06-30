@@ -54,7 +54,7 @@
 }
 
 .celebrate-glow {
-  animation: celebrate-glow 0.6s ease-out both;
+  animation: celebrate-glow 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
 @keyframes celebrate-meter {
@@ -64,7 +64,7 @@
 }
 
 .celebrate-meter {
-  animation: celebrate-meter 0.6s ease-out both;
+  animation: celebrate-meter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
 /* Splash: ease-out fade-in (300ms), linear hold (500ms), ease-in fade-out (250ms) */

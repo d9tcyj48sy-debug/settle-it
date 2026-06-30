@@ -5,8 +5,11 @@ import { BoltIcon, EditIcon, ShareIcon } from "../components/Icons";
 
 const ANIM_DURATION = 1000;
 
-function easeOutCubic(t) {
-  return 1 - Math.pow(1 - t, 3);
+function springEase(t) {
+  // easeOutBack — slight overshoot then settle, approximates iOS spring physics
+  const c1 = 1.0;
+  const c3 = c1 + 1;
+  return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
 }
 
 export function VerdictScreen({ verdict, onNewSettle, onArgueBetter }) {
@@ -24,9 +27,9 @@ export function VerdictScreen({ verdict, onNewSettle, onArgueBetter }) {
     function tick(now) {
       const elapsed = now - start;
       const progress = Math.min(elapsed / ANIM_DURATION, 1);
-      const eased = easeOutCubic(progress);
+      const eased = springEase(progress);
 
-      const animA = Math.round(50 + (sideAPercentage - 50) * eased);
+      const animA = Math.min(100, Math.max(0, Math.round(50 + (sideAPercentage - 50) * eased)));
       setDisplayA(animA);
       setDisplayB(100 - animA);
 
