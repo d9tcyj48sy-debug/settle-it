@@ -210,7 +210,7 @@ export default function App() {
             onArgueBetter={handleArgueBetter}
           />
         )}
-        {screen === "history" && <HistoryScreen />}
+        {screen === "history" && <HistoryScreen onGoSettle={() => navigate("input", () => setArgueBetter(null))} />}
         {screen === "error" && (
           <ErrorScreen
             errorType={error?.errorType ?? "unknown"}
