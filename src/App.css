@@ -13,7 +13,7 @@
 }
 
 .dark {
-  --meter-empty: #252535;
+  --meter-empty: #1e1e25;
 }
 
 [data-accent="forest"] {

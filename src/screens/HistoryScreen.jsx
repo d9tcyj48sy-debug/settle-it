@@ -24,7 +24,7 @@ function StreakCard({ streak }) {
   const empty = streak.current === 0 && streak.best === 0;
   const numClass = `text-3xl font-bold tabular-nums ${empty ? "text-zinc-400 dark:text-zinc-600" : "text-zinc-900 dark:text-white"}`;
   return (
-    <div className={`rounded-xl bg-zinc-50 dark:bg-[#222229] border border-zinc-200 dark:border-[#38383f] flex overflow-hidden transition-opacity${empty ? " opacity-50" : ""}`}>
+    <div className={`rounded-xl bg-zinc-50 dark:bg-[#1a1a1f] border border-zinc-200 dark:border-[#333338] flex overflow-hidden transition-opacity${empty ? " opacity-50" : ""}`}>
       <div className="flex-1 flex flex-col items-center py-4 gap-1">
         <span className="text-xs font-medium uppercase tracking-widest text-zinc-500">
           current streak
@@ -34,7 +34,7 @@ function StreakCard({ streak }) {
           {streak.current}
         </span>
       </div>
-      <div className="w-px bg-zinc-200 dark:bg-[#38383f]" />
+      <div className="w-px bg-zinc-200 dark:bg-[#333338]" />
       <div className="flex-1 flex flex-col items-center py-4 gap-1">
         <span className="text-xs font-medium uppercase tracking-widest text-zinc-500">
           personal best
@@ -265,7 +265,7 @@ function HistoryEntry({
   return (
     <div
       ref={outerRef}
-      className="relative rounded-xl overflow-hidden border border-zinc-200 dark:border-[#38383f]"
+      className="relative rounded-xl overflow-hidden border border-zinc-200 dark:border-[#333338]"
       style={{
         transition: "border-color 180ms ease",
         borderColor: isExpanded ? "var(--accent-border)" : undefined,
@@ -293,7 +293,7 @@ function HistoryEntry({
       <div
         ref={contentRef}
         onClick={handleClick}
-        className="relative px-4 py-3 bg-zinc-50 dark:bg-[#222229] cursor-pointer"
+        className="relative px-4 py-3 bg-zinc-50 dark:bg-[#1a1a1f] cursor-pointer"
         style={{ WebkitTapHighlightColor: "transparent" }}
       >
         {/* Top row */}
@@ -348,7 +348,7 @@ function HistoryEntry({
                 : "opacity 0ms",
             }}
           >
-            <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed pt-3 mt-3 border-t border-zinc-200 dark:border-[#38383f]">
+            <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed pt-3 mt-3 border-t border-zinc-200 dark:border-[#333338]">
               {ruling}
             </p>
             <div className="flex justify-end mt-2">
@@ -372,7 +372,7 @@ function EmptyState({ onGoSettle }) {
   return (
     <div className="flex flex-col items-center text-center gap-3">
       <div
-        className="flex items-center justify-center rounded-2xl bg-zinc-100 dark:bg-[#222229] border border-zinc-200 dark:border-[#38383f]"
+        className="flex items-center justify-center rounded-2xl bg-zinc-100 dark:bg-[#1a1a1f] border border-zinc-200 dark:border-[#333338]"
         style={{ width: 52, height: 52 }}
       >
         <span style={{ color: "var(--accent)" }}>
@@ -427,7 +427,7 @@ export function HistoryScreen({ onGoSettle }) {
 
   return (
     <div
-      className="min-h-[100dvh] flex flex-col bg-white dark:bg-[#09090f] transition-colors duration-200"
+      className="min-h-[100dvh] flex flex-col bg-white dark:bg-[#0e0e0f] transition-colors duration-200"
       style={{ paddingTop: "env(safe-area-inset-top)" }}
     >
       <div className="flex-1 flex flex-col w-full max-w-[480px] mx-auto px-5 pt-4 pb-24">

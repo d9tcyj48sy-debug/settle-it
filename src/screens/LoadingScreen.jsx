@@ -54,7 +54,7 @@ export function LoadingScreen() {
 
   return (
     <div
-      className="min-h-[100dvh] bg-zinc-50 dark:bg-[#09090f] flex items-center justify-center transition-colors duration-200"
+      className="min-h-[100dvh] bg-zinc-50 dark:bg-[#0e0e0f] flex items-center justify-center transition-colors duration-200"
       style={{ paddingTop: "env(safe-area-inset-top)" }}
     >
       <div className="flex flex-col items-center gap-6 px-8 text-center">

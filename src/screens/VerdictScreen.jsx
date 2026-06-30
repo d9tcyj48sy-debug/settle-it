@@ -60,7 +60,7 @@ export function VerdictScreen({ verdict, onNewSettle, onArgueBetter }) {
   }
 
   return (
-    <div className="min-h-[100dvh] bg-white dark:bg-[#09090f] flex justify-center items-center transition-colors duration-200" style={{ paddingTop: "env(safe-area-inset-top)" }}>
+    <div className="min-h-[100dvh] bg-white dark:bg-[#0e0e0f] flex justify-center items-center transition-colors duration-200" style={{ paddingTop: "env(safe-area-inset-top)" }}>
       <div className="w-full max-w-[480px] flex flex-col px-5 pt-6 pb-10 gap-8">
 
         {/* App name */}
@@ -140,7 +140,7 @@ export function VerdictScreen({ verdict, onNewSettle, onArgueBetter }) {
 
         {/* Ruling card */}
         <div
-          className="rounded-2xl px-5 py-4 bg-zinc-50 dark:bg-[#222229] border border-zinc-200 dark:border-[#38383f]"
+          className="rounded-2xl px-5 py-4 bg-zinc-50 dark:bg-[#1a1a1f] border border-zinc-200 dark:border-[#333338]"
           style={{
             opacity: rulingVisible ? 1 : 0,
             transition: rulingVisible ? "opacity 0.5s ease" : "none",
@@ -179,7 +179,7 @@ export function VerdictScreen({ verdict, onNewSettle, onArgueBetter }) {
               onTouchStart={pressIn}
               onTouchEnd={pressOut}
               onTouchCancel={pressOut}
-              className="flex items-center justify-center shrink-0 bg-white dark:bg-[#222229] border border-zinc-200 dark:border-[#38383f] text-zinc-500 dark:text-zinc-400 transition-all duration-100"
+              className="flex items-center justify-center shrink-0 bg-white dark:bg-[#1a1a1f] border border-zinc-200 dark:border-[#333338] text-zinc-500 dark:text-zinc-400 transition-all duration-100"
               style={{ width: 46, height: 46, borderRadius: "14px" }}
             >
               <ShareIcon size={15} />

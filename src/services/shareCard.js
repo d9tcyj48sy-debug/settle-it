@@ -60,7 +60,7 @@ function drawCard(ctx, verdict) {
   const ACCENT = ACCENT_COLORS[getAccentTheme()] ?? ACCENT_COLORS.purple;
 
   // ── Background ──────────────────────────────────────────────────────────
-  ctx.fillStyle = "#09090f";
+  ctx.fillStyle = "#0e0e0f";
   ctx.fillRect(0, 0, SIZE, SIZE);
 
   // ── Wordmark ─────────────────────────────────────────────────────────────
@@ -124,7 +124,7 @@ function drawCard(ctx, verdict) {
 
   for (let i = 0; i < 10; i++) {
     const x = PAD + i * (SEG_W + SEG_GAP);
-    ctx.fillStyle = i < filledSegs ? ACCENT : "#252535";
+    ctx.fillStyle = i < filledSegs ? ACCENT : "#1e1e25";
     roundFill(ctx, x, METER_Y, SEG_W, METER_H, SEG_R);
   }
 

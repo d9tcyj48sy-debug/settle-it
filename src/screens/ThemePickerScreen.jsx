@@ -35,7 +35,7 @@ export function ThemePickerScreen({ onBack }) {
 
   return (
     <div
-      className="min-h-[100dvh] bg-white dark:bg-[#09090f] flex flex-col transition-colors duration-200"
+      className="min-h-[100dvh] bg-white dark:bg-[#0e0e0f] flex flex-col transition-colors duration-200"
       style={{ paddingTop: "env(safe-area-inset-top)" }}
     >
       <div className="flex-1 max-w-[480px] w-full mx-auto px-5 pt-6 pb-10">
@@ -60,7 +60,7 @@ export function ThemePickerScreen({ onBack }) {
 
         <section>
           <SectionLabel>choose a theme</SectionLabel>
-          <div className="rounded-xl bg-zinc-50 dark:bg-[#222229] border border-zinc-200 dark:border-[#38383f] overflow-hidden divide-y divide-zinc-200 dark:divide-[#38383f]">
+          <div className="rounded-xl bg-zinc-50 dark:bg-[#1a1a1f] border border-zinc-200 dark:border-[#333338] overflow-hidden divide-y divide-zinc-200 dark:divide-[#333338]">
             {THEMES.map(({ id, label, color, subtitle }) => {
               const selected = accentTheme === id;
               return (

@@ -116,7 +116,7 @@ function SettingRow({ icon, label, right }) {
 
 function Card({ children }) {
   return (
-    <div className="rounded-xl bg-zinc-50 dark:bg-[#222229] border border-zinc-200 dark:border-[#38383f] overflow-hidden divide-y divide-zinc-200 dark:divide-[#38383f]">
+    <div className="rounded-xl bg-zinc-50 dark:bg-[#1a1a1f] border border-zinc-200 dark:border-[#333338] overflow-hidden divide-y divide-zinc-200 dark:divide-[#333338]">
       {children}
     </div>
   );
@@ -157,7 +157,7 @@ function ConfirmModal({ title, message, confirmLabel, cancelLabel, onConfirm, on
       onClick={onCancel}
     >
       <div
-        className="w-full max-w-[320px] bg-white dark:bg-[#222229] border border-zinc-200 dark:border-[#38383f] rounded-2xl p-5 flex flex-col gap-4 animate-fade-in"
+        className="w-full max-w-[320px] bg-white dark:bg-[#1a1a1f] border border-zinc-200 dark:border-[#333338] rounded-2xl p-5 flex flex-col gap-4 animate-fade-in"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex flex-col gap-1.5">
@@ -169,7 +169,7 @@ function ConfirmModal({ title, message, confirmLabel, cancelLabel, onConfirm, on
         <div className="flex gap-2">
           <button
             onClick={onConfirm}
-            className="flex-1 border border-zinc-200 dark:border-[#38383f] text-zinc-700 dark:text-zinc-300 bg-transparent active:opacity-70 transition-opacity duration-100"
+            className="flex-1 border border-zinc-200 dark:border-[#333338] text-zinc-700 dark:text-zinc-300 bg-transparent active:opacity-70 transition-opacity duration-100"
             style={{ borderRadius: "14px", padding: "12px", fontSize: "12.5px", fontWeight: 500 }}
           >
             {confirmLabel}
@@ -233,7 +233,7 @@ export function SettingsScreen({ onBack, onOpenThemePicker, onOpenPrivacy }) {
 
   return (
     <div
-      className="min-h-[100dvh] bg-white dark:bg-[#09090f] flex flex-col transition-colors duration-200"
+      className="min-h-[100dvh] bg-white dark:bg-[#0e0e0f] flex flex-col transition-colors duration-200"
       style={{ paddingTop: "env(safe-area-inset-top)" }}
     >
       <div className="flex-1 max-w-[480px] w-full mx-auto px-5 pt-6 pb-10">

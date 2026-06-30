@@ -13,7 +13,7 @@ function Section({ title, children }) {
 export function PrivacyScreen({ onBack }) {
   return (
     <div
-      className="min-h-[100dvh] bg-white dark:bg-[#09090f] flex flex-col transition-colors duration-200"
+      className="min-h-[100dvh] bg-white dark:bg-[#0e0e0f] flex flex-col transition-colors duration-200"
       style={{ paddingTop: "env(safe-area-inset-top)" }}
     >
       <div className="flex-1 max-w-[480px] w-full mx-auto px-5 pt-6 pb-16">

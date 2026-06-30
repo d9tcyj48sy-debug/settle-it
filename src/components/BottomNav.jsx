@@ -30,7 +30,7 @@ function NavTab({ label, active, onClick, children }) {
 
 export function BottomNav({ activeTab, onSettle, onHistory }) {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 flex justify-center bg-white/90 dark:bg-[#09090f]/90 backdrop-blur-md border-t border-zinc-200 dark:border-[#38383f]">
+    <nav className="fixed bottom-0 left-0 right-0 flex justify-center bg-white/90 dark:bg-[#0e0e0f]/90 backdrop-blur-md border-t border-zinc-200 dark:border-[#333338]">
       <div className="w-full max-w-[480px] flex">
         <NavTab label="Settle" active={activeTab === "settle"} onClick={onSettle}>
           <ScaleIcon size={22} />
