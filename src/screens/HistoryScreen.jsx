@@ -434,8 +434,10 @@ export function HistoryScreen({ onGoSettle }) {
         <StreakCard streak={streak} />
 
         {history.length === 0 ? (
-          <div className="flex-1 flex items-center justify-center">
+          <div className="flex-1 flex flex-col">
+            <div style={{ flex: 1 }} />
             <EmptyState onGoSettle={onGoSettle} />
+            <div style={{ flex: 2 }} />
           </div>
         ) : (
           <div className="flex flex-col gap-2 mt-6">
