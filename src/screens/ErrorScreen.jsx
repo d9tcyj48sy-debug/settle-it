@@ -35,7 +35,7 @@ export function ErrorScreen({ errorType, onRetry, onStartOver }) {
 
   return (
     <div
-      className="min-h-[100dvh] bg-white dark:bg-zinc-950 flex justify-center items-center transition-colors duration-200"
+      className="min-h-[100dvh] bg-white dark:bg-[#09090f] flex justify-center items-center transition-colors duration-200"
       style={{ paddingTop: "env(safe-area-inset-top)" }}
     >
       <div className="w-full max-w-[480px] flex flex-col items-center px-5 py-10 pb-28 gap-8 text-center">

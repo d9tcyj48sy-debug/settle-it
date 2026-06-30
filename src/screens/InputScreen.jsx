@@ -46,14 +46,14 @@ function Textarea({ label, value, onChange, placeholder, autoFocus }) {
         style={{ minHeight: "160px", touchAction: "manipulation" }}
         className={`
           w-full resize-none rounded-xl px-4 py-3 text-base leading-relaxed
-          bg-zinc-100 dark:bg-zinc-900
+          bg-zinc-100 dark:bg-[#222229]
           text-zinc-900 dark:text-zinc-100
           placeholder:text-zinc-400 dark:placeholder:text-zinc-600
           border transition-colors outline-none
           ${
             atLimit
               ? "border-red-500/60 focus:border-red-500"
-              : "border-zinc-200 dark:border-zinc-800 focus:border-[var(--accent)]"
+              : "border-zinc-200 dark:border-[#38383f] focus:border-[var(--accent)]"
           }
         `}
       />
@@ -83,7 +83,7 @@ export function InputScreen({ onSubmit, argueBetter, dirtyCheckRef, onOpenSettin
 
   return (
     <div
-      className="min-h-[100dvh] bg-white dark:bg-zinc-950 flex flex-col transition-colors duration-200"
+      className="min-h-[100dvh] bg-white dark:bg-[#09090f] flex flex-col transition-colors duration-200"
       style={{ paddingTop: "env(safe-area-inset-top)" }}
     >
       <div className="flex-1 flex justify-center items-center">
