@@ -2,14 +2,20 @@ import { useEffect, useState } from "react";
 import { GearIcon, HistoryIcon } from "../components/Icons";
 
 const MAX = 500;
-const WARN = 400;
+const WARN = 450;
 
 function CharCount({ count }) {
-  if (count < WARN) return null;
   const atLimit = count >= MAX;
+  const nearLimit = count >= WARN;
   return (
     <span
-      className={`text-xs tabular-nums ${atLimit ? "text-red-500" : "text-zinc-500 dark:text-zinc-400"}`}
+      className={`text-xs tabular-nums ${
+        atLimit
+          ? "text-red-500"
+          : nearLimit
+          ? "text-amber-500"
+          : "text-zinc-400 dark:text-zinc-600"
+      }`}
     >
       {count}/{MAX}
     </span>
