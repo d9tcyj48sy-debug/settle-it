@@ -383,15 +383,10 @@ function EmptyState() {
 }
 
 export function HistoryScreen() {
-  const [history, setHistory] = useState([]);
-  const [streak, setStreak] = useState({ current: 0, best: 0 });
+  const [history, setHistory] = useState(() => getHistory());
+  const [streak] = useState(() => getStreak());
   const [expandedId, setExpandedId] = useState(null);
   const [openSwipeId, setOpenSwipeId] = useState(null);
-
-  useEffect(() => {
-    setHistory(getHistory());
-    setStreak(getStreak());
-  }, []);
 
   function toggleEntry(id) {
     setExpandedId((prev) => (prev === id ? null : id));
@@ -404,7 +399,9 @@ export function HistoryScreen() {
     setOpenSwipeId(null);
     try {
       navigator.vibrate && navigator.vibrate(30);
-    } catch (_) {}
+    } catch {
+      // Vibration API unavailable — not a user-facing error
+    }
   }
 
   return (
