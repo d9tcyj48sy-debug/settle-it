@@ -31,6 +31,10 @@ export function addVerdict(verdict) {
   write(KEYS.history, [verdict, ...history]);
 }
 
+export function deleteVerdict(id) {
+  write(KEYS.history, getHistory().filter((v) => v.id !== id));
+}
+
 export function clearHistory() {
   localStorage.removeItem(KEYS.history);
 }
