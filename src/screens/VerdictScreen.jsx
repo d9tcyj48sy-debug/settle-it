@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { shareVerdict } from "../services/shareCard";
 import { playVerdictSound } from "../services/soundService";
 import { BoltIcon, EditIcon, ShareIcon } from "../components/Icons";
+import { pressIn, pressOut, textPressIn, textPressOut } from "../utils/touch";
 
 const ANIM_DURATION = 1000;
 
@@ -148,7 +149,10 @@ export function VerdictScreen({ verdict, onNewSettle, onArgueBetter }) {
           <div className="flex gap-2">
             <button
               onClick={onArgueBetter}
-              className="flex-1 flex items-center justify-center gap-1.5 text-white active:brightness-90 transition-all duration-100"
+              onTouchStart={pressIn}
+              onTouchEnd={pressOut}
+              onTouchCancel={pressOut}
+              className="flex-1 flex items-center justify-center gap-1.5 text-white transition-all duration-100"
               style={{
                 background: "linear-gradient(to bottom, var(--accent-g-from), var(--accent-g-to))",
                 borderRadius: "14px",
@@ -164,7 +168,10 @@ export function VerdictScreen({ verdict, onNewSettle, onArgueBetter }) {
             <button
               onClick={handleShare}
               aria-label="Share verdict"
-              className="flex items-center justify-center shrink-0 bg-white dark:bg-[#18181c] border border-zinc-200 dark:border-[#28282e] text-zinc-500 dark:text-zinc-400 active:brightness-90 transition-all duration-100"
+              onTouchStart={pressIn}
+              onTouchEnd={pressOut}
+              onTouchCancel={pressOut}
+              className="flex items-center justify-center shrink-0 bg-white dark:bg-[#18181c] border border-zinc-200 dark:border-[#28282e] text-zinc-500 dark:text-zinc-400 transition-all duration-100"
               style={{ width: 46, height: 46, borderRadius: "14px" }}
             >
               <ShareIcon size={15} />
@@ -174,6 +181,9 @@ export function VerdictScreen({ verdict, onNewSettle, onArgueBetter }) {
           {/* Row 2: new settle text link */}
           <button
             onClick={onNewSettle}
+            onTouchStart={textPressIn}
+            onTouchEnd={textPressOut}
+            onTouchCancel={textPressOut}
             className="w-full text-center text-zinc-600 dark:text-zinc-500 bg-transparent border-none cursor-pointer"
             style={{ fontSize: "11px", padding: "4px" }}
           >

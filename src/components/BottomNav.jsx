@@ -1,4 +1,5 @@
 import { ScaleIcon, ClockIcon } from "./Icons";
+import { pressIn, pressOut } from "../utils/touch";
 
 const ACCENT = "var(--accent)";
 
@@ -7,6 +8,9 @@ function NavTab({ label, active, onClick, children }) {
     <button
       onClick={onClick}
       aria-label={label}
+      onTouchStart={pressIn}
+      onTouchEnd={pressOut}
+      onTouchCancel={pressOut}
       className="flex-1 flex flex-col items-center justify-center gap-1 py-3 transition-colors"
       style={{ color: active ? ACCENT : undefined }}
     >

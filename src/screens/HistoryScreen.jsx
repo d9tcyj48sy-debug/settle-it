@@ -6,6 +6,7 @@ import {
 } from "../services/storageService";
 import { ArrowLeftIcon, ChevronDownIcon, ScaleIcon, ShareIcon, TrashIcon } from "../components/Icons";
 import { shareVerdict } from "../services/shareCard";
+import { textPressIn, textPressOut } from "../utils/touch";
 
 const DELETE_WIDTH = 80;
 
@@ -389,6 +390,9 @@ function EmptyState({ onGoSettle }) {
       <button
         type="button"
         onClick={onGoSettle}
+        onTouchStart={textPressIn}
+        onTouchEnd={textPressOut}
+        onTouchCancel={textPressOut}
         className="flex items-center gap-1.5 text-sm font-medium bg-transparent border-none cursor-pointer"
         style={{ color: "var(--accent)", WebkitTapHighlightColor: "transparent" }}
       >

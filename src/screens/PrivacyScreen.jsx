@@ -1,4 +1,5 @@
 import { ChevronLeftIcon } from "../components/Icons";
+import { pressIn, pressOut } from "../utils/touch";
 
 function Section({ title, children }) {
   return (
@@ -22,6 +23,9 @@ export function PrivacyScreen({ onBack }) {
             type="button"
             onClick={onBack}
             aria-label="Back"
+            onTouchStart={pressIn}
+            onTouchEnd={pressOut}
+            onTouchCancel={pressOut}
             className="p-2 -ml-2 rounded-lg text-zinc-500 dark:text-zinc-400 active:text-zinc-900 dark:active:text-white active:bg-zinc-100 dark:active:bg-zinc-800 transition-colors"
             style={{ background: "none", border: "none", WebkitTapHighlightColor: "transparent" }}
           >

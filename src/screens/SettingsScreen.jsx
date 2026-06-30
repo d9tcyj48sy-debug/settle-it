@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTheme } from "../context/useTheme";
 import { useAccentTheme } from "../context/useAccentTheme";
+import { pressIn, pressOut } from "../utils/touch";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -32,10 +33,13 @@ function BrightnessControl({ theme, onSetTheme }) {
             key={opt}
             type="button"
             onClick={() => onSetTheme(opt)}
+            onTouchStart={pressIn}
+            onTouchEnd={pressOut}
+            onTouchCancel={pressOut}
             className={`flex-1 py-1.5 rounded-md text-xs font-medium transition-colors capitalize ${
               active
                 ? "bg-white dark:bg-zinc-600 text-zinc-900 dark:text-white shadow-sm"
-                : "text-zinc-500 dark:text-zinc-400 active:text-zinc-700 dark:active:text-zinc-300"
+                : "text-zinc-500 dark:text-zinc-400"
             }`}
             style={{ WebkitTapHighlightColor: "transparent" }}
           >
@@ -54,6 +58,9 @@ function Toggle({ on, onToggle }) {
       role="switch"
       aria-checked={on}
       onClick={onToggle}
+      onTouchStart={pressIn}
+      onTouchEnd={pressOut}
+      onTouchCancel={pressOut}
       className={on ? "" : "bg-zinc-300 dark:bg-zinc-600"}
       style={{
         position: "relative",
@@ -120,6 +127,9 @@ function TappableRow({ icon, label, subtitle, right, onClick, danger }) {
     <button
       type="button"
       onClick={onClick}
+      onTouchStart={pressIn}
+      onTouchEnd={pressOut}
+      onTouchCancel={pressOut}
       className="w-full flex items-center gap-3 px-4 py-3.5 text-left active:bg-zinc-100 dark:active:bg-zinc-800 transition-colors"
       style={{ WebkitTapHighlightColor: "transparent" }}
     >
@@ -233,6 +243,9 @@ export function SettingsScreen({ onBack, onOpenThemePicker, onOpenPrivacy }) {
             type="button"
             onClick={onBack}
             aria-label="Back"
+            onTouchStart={pressIn}
+            onTouchEnd={pressOut}
+            onTouchCancel={pressOut}
             className="p-2 -ml-2 rounded-lg text-zinc-500 dark:text-zinc-400 active:text-zinc-900 dark:active:text-white active:bg-zinc-100 dark:active:bg-zinc-800 transition-colors"
             style={{ background: "none", border: "none", WebkitTapHighlightColor: "transparent" }}
           >

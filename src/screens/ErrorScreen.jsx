@@ -1,3 +1,5 @@
+import { pressIn, pressOut } from "../utils/touch";
+
 const ERROR_COPY = {
   rate_limited: "easy there — come back in a bit.",
   content_rejected: "we don't settle that kind of thing here.",
@@ -49,13 +51,19 @@ export function ErrorScreen({ errorType, onRetry, onStartOver }) {
           {canRetry && (
             <button
               onClick={onRetry}
-              className="w-full py-4 rounded-xl text-base font-semibold bg-[var(--accent)] text-white hover:brightness-110 active:scale-[0.98] transition-all duration-150"
+              onTouchStart={pressIn}
+              onTouchEnd={pressOut}
+              onTouchCancel={pressOut}
+              className="w-full py-4 rounded-xl text-base font-semibold bg-[var(--accent)] text-white hover:brightness-110 transition-all duration-150"
             >
               retry
             </button>
           )}
           <button
             onClick={onStartOver}
+            onTouchStart={pressIn}
+            onTouchEnd={pressOut}
+            onTouchCancel={pressOut}
             className="w-full py-4 rounded-xl text-base font-semibold border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors"
           >
             start over

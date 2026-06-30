@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { GearIcon, HistoryIcon } from "../components/Icons";
+import { pressIn, pressOut } from "../utils/touch";
 
 const MAX = 500;
 const WARN = 450;
@@ -93,6 +94,9 @@ export function InputScreen({ onSubmit, argueBetter, dirtyCheckRef, onOpenSettin
               type="button"
               onClick={onOpenSettings}
               aria-label="Open settings"
+              onTouchStart={pressIn}
+              onTouchEnd={pressOut}
+              onTouchCancel={pressOut}
               style={{ background: "none", border: "none", WebkitAppearance: "none", WebkitTapHighlightColor: "transparent" }}
               className="bg-transparent border-none p-2 rounded-lg text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
             >
@@ -136,13 +140,16 @@ export function InputScreen({ onSubmit, argueBetter, dirtyCheckRef, onOpenSettin
             <button
               type="submit"
               disabled={isDisabled}
+              onTouchStart={isDisabled ? undefined : pressIn}
+              onTouchEnd={pressOut}
+              onTouchCancel={pressOut}
               className={`
               w-full py-4 rounded-xl text-base font-semibold text-white
               transition-all duration-150
               ${
                 isDisabled
                   ? "opacity-30 cursor-not-allowed bg-[var(--accent)]"
-                  : "bg-[var(--accent)] hover:brightness-110 active:scale-[0.98]"
+                  : "bg-[var(--accent)] hover:brightness-110"
               }
             `}
             >
