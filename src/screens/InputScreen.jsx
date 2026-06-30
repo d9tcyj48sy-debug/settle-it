@@ -164,7 +164,7 @@ export function InputScreen({ onSubmit, argueBetter, dirtyCheckRef }) {
                 }}
               >
                 <HistoryIcon size={10} />
-                round 2: {argueBetter.topicLabel}
+                round {argueBetter.round}: {argueBetter.topicLabel}
               </span>
             )}
             <div className="flex gap-3">

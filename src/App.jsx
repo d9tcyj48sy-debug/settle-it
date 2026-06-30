@@ -125,6 +125,7 @@ export default function App() {
         sideA: lastSides.sideA,
         sideB: lastSides.sideB,
         topicLabel: verdict.topicLabel,
+        round: argueBetter ? argueBetter.round + 1 : 2,
       });
     });
   }
