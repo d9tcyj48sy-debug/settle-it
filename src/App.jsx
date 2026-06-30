@@ -5,6 +5,7 @@ import { VerdictScreen } from "./screens/VerdictScreen";
 import { HistoryScreen } from "./screens/HistoryScreen";
 import { ErrorScreen } from "./screens/ErrorScreen";
 import { SettingsScreen } from "./screens/SettingsScreen";
+import { ThemePickerScreen } from "./screens/ThemePickerScreen";
 import { BottomNav } from "./components/BottomNav";
 import { getVerdict } from "./services/verdictService";
 import { addVerdict, updateStreak } from "./services/storageService";
@@ -178,7 +179,15 @@ export default function App() {
     navigate("input");
   }
 
-  const showNav = screen !== "loading" && screen !== "splash" && screen !== "settings";
+  function handleOpenThemePicker() {
+    navigate("themePicker");
+  }
+
+  function handleCloseThemePicker() {
+    navigate("settings");
+  }
+
+  const showNav = screen !== "loading" && screen !== "splash" && screen !== "settings" && screen !== "themePicker";
   const activeTab = screen === "history" ? "history" : "settle";
 
   return (
@@ -191,7 +200,8 @@ export default function App() {
       >
         {screen === "splash" && <SplashScreen onComplete={() => setScreen("input")} />}
         {screen === "input" && <InputScreen onSubmit={handleSubmit} argueBetter={argueBetter} dirtyCheckRef={inputDirtyCheckRef} onOpenSettings={handleOpenSettings} />}
-        {screen === "settings" && <SettingsScreen onBack={handleCloseSettings} />}
+        {screen === "settings" && <SettingsScreen onBack={handleCloseSettings} onOpenThemePicker={handleOpenThemePicker} />}
+        {screen === "themePicker" && <ThemePickerScreen onBack={handleCloseThemePicker} />}
         {screen === "loading" && <LoadingScreen />}
         {screen === "verdict" && (
           <VerdictScreen

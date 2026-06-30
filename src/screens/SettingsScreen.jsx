@@ -3,7 +3,7 @@ import { useTheme } from "../context/useTheme";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
-  MoonSettingsIcon,
+  SunIcon,
   VolumeIcon,
   ShieldIcon,
   TrashIcon,
@@ -15,12 +15,35 @@ import {
   resetStreak,
 } from "../services/storageService";
 
-const THEME_CYCLE = { dark: "light", light: "system", system: "dark" };
+const BRIGHTNESS_OPTIONS = ["system", "light", "dark"];
 
-function themeSubtitle(theme) {
-  if (theme === "system") return "currently following system";
-  if (theme === "dark") return "on";
-  return "off";
+function BrightnessControl({ theme, onSetTheme }) {
+  return (
+    <div
+      className="flex rounded-lg bg-zinc-200 dark:bg-zinc-800 p-0.5 gap-0.5"
+      role="group"
+      aria-label="Brightness"
+    >
+      {BRIGHTNESS_OPTIONS.map((opt) => {
+        const active = theme === opt;
+        return (
+          <button
+            key={opt}
+            type="button"
+            onClick={() => onSetTheme(opt)}
+            className={`flex-1 py-1.5 rounded-md text-xs font-medium transition-colors capitalize ${
+              active
+                ? "bg-white dark:bg-zinc-600 text-zinc-900 dark:text-white shadow-sm"
+                : "text-zinc-500 dark:text-zinc-400 active:text-zinc-700 dark:active:text-zinc-300"
+            }`}
+            style={{ WebkitTapHighlightColor: "transparent" }}
+          >
+            {opt}
+          </button>
+        );
+      })}
+    </div>
+  );
 }
 
 function Toggle({ on, onToggle }) {
@@ -71,15 +94,12 @@ function SectionLabel({ children }) {
   );
 }
 
-function SettingRow({ icon, label, subtitle, right }) {
+function SettingRow({ icon, label, right }) {
   return (
     <div className="flex items-center gap-3 px-4 py-3.5">
       <span className="text-zinc-500 dark:text-zinc-400 shrink-0">{icon}</span>
       <div className="flex-1 min-w-0">
         <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100">{label}</p>
-        {subtitle && (
-          <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-0.5">{subtitle}</p>
-        )}
       </div>
       {right}
     </div>
@@ -94,7 +114,7 @@ function Card({ children }) {
   );
 }
 
-function TappableRow({ icon, label, onClick, danger }) {
+function TappableRow({ icon, label, subtitle, right, onClick, danger }) {
   return (
     <button
       type="button"
@@ -102,22 +122,18 @@ function TappableRow({ icon, label, onClick, danger }) {
       className="w-full flex items-center gap-3 px-4 py-3.5 text-left active:bg-zinc-100 dark:active:bg-zinc-800 transition-colors"
       style={{ WebkitTapHighlightColor: "transparent" }}
     >
-      <span
-        className="shrink-0"
-        style={{ color: danger ? "#ef4444" : undefined }}
-      >
+      <span className="shrink-0" style={{ color: danger ? "#ef4444" : undefined }}>
         {icon}
       </span>
-      <span
-        className={`flex-1 text-sm font-medium ${
-          danger ? "text-red-500" : "text-zinc-900 dark:text-zinc-100"
-        }`}
-      >
-        {label}
-      </span>
-      <span className="text-zinc-400 dark:text-zinc-500 shrink-0">
-        <ChevronRightIcon size={16} />
-      </span>
+      <div className="flex-1 min-w-0">
+        <p className={`text-sm font-medium ${danger ? "text-red-500" : "text-zinc-900 dark:text-zinc-100"}`}>
+          {label}
+        </p>
+        {subtitle && (
+          <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-0.5">{subtitle}</p>
+        )}
+      </div>
+      <span className="text-zinc-400 dark:text-zinc-500 shrink-0">{right}</span>
     </button>
   );
 }
@@ -166,19 +182,26 @@ function ConfirmModal({ title, message, confirmLabel, cancelLabel, onConfirm, on
   );
 }
 
-export function SettingsScreen({ onBack }) {
+function ColorSwatch({ color }) {
+  return (
+    <span
+      style={{
+        display: "inline-block",
+        width: 20,
+        height: 20,
+        borderRadius: "50%",
+        background: color,
+        flexShrink: 0,
+      }}
+    />
+  );
+}
+
+export function SettingsScreen({ onBack, onOpenThemePicker }) {
   const { theme, setTheme } = useTheme();
   const [sound, setSound] = useState(getSoundPreference);
   const [showConfirm, setShowConfirm] = useState(false);
   const [cleared, setCleared] = useState(false);
-
-  const effectiveDark =
-    theme === "dark" ||
-    (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
-
-  function handleThemeToggle() {
-    setTheme(THEME_CYCLE[theme]);
-  }
 
   function handleSoundToggle() {
     const next = !sound;
@@ -221,11 +244,28 @@ export function SettingsScreen({ onBack }) {
           <section>
             <SectionLabel>appearance</SectionLabel>
             <Card>
-              <SettingRow
-                icon={<MoonSettingsIcon size={18} />}
-                label="dark mode"
-                subtitle={themeSubtitle(theme)}
-                right={<Toggle on={effectiveDark} onToggle={handleThemeToggle} />}
+              <div className="px-4 py-3.5 flex flex-col gap-3">
+                <div className="flex items-center gap-3">
+                  <span className="text-zinc-500 dark:text-zinc-400 shrink-0">
+                    <SunIcon size={18} />
+                  </span>
+                  <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100">brightness</p>
+                </div>
+                <BrightnessControl theme={theme} onSetTheme={setTheme} />
+              </div>
+            </Card>
+          </section>
+
+          {/* Theme */}
+          <section>
+            <SectionLabel>theme</SectionLabel>
+            <Card>
+              <TappableRow
+                icon={<ColorSwatch color="#7c5cfc" />}
+                label="default purple"
+                subtitle="1 theme available"
+                right={<ChevronRightIcon size={16} />}
+                onClick={onOpenThemePicker}
               />
             </Card>
           </section>
@@ -236,7 +276,7 @@ export function SettingsScreen({ onBack }) {
             <Card>
               <SettingRow
                 icon={<VolumeIcon size={18} />}
-                label="verdict sound effects"
+                label="sound effects"
                 right={<Toggle on={sound} onToggle={handleSoundToggle} />}
               />
             </Card>
@@ -249,12 +289,14 @@ export function SettingsScreen({ onBack }) {
               <TappableRow
                 icon={<ShieldIcon size={18} />}
                 label="privacy policy"
+                right={<ChevronRightIcon size={16} />}
                 onClick={() => window.open("/privacy", "_blank")}
               />
               <TappableRow
                 icon={<TrashIcon size={18} />}
                 label={cleared ? "history cleared" : "clear all history"}
                 danger={!cleared}
+                right={<ChevronRightIcon size={16} />}
                 onClick={cleared ? undefined : () => setShowConfirm(true)}
               />
             </Card>
