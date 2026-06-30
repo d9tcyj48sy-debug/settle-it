@@ -173,26 +173,32 @@ export default function App() {
   }
 
   function handleOpenSettings() {
+    document.activeElement?.blur();
     navigate("settings");
   }
 
   function handleCloseSettings() {
+    document.activeElement?.blur();
     navigate("input");
   }
 
   function handleOpenThemePicker() {
+    document.activeElement?.blur();
     navigate("themePicker");
   }
 
   function handleCloseThemePicker() {
+    document.activeElement?.blur();
     navigate("settings");
   }
 
   function handleOpenPrivacy() {
+    document.activeElement?.blur();
     navigate("privacy");
   }
 
   function handleClosePrivacy() {
+    document.activeElement?.blur();
     navigate("settings");
   }
 
