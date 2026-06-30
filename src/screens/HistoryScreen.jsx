@@ -23,7 +23,7 @@ function StreakCard({ streak }) {
   const empty = streak.current === 0 && streak.best === 0;
   const numClass = `text-3xl font-bold tabular-nums ${empty ? "text-zinc-400 dark:text-zinc-600" : "text-zinc-900 dark:text-white"}`;
   return (
-    <div className="rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex overflow-hidden">
+    <div className={`rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex overflow-hidden transition-opacity${empty ? " opacity-50" : ""}`}>
       <div className="flex-1 flex flex-col items-center py-4 gap-1">
         <span className="text-xs font-medium uppercase tracking-widest text-zinc-500">
           current streak
@@ -369,13 +369,13 @@ function HistoryEntry({
 
 function EmptyState({ onGoSettle }) {
   return (
-    <div className="flex flex-col items-center justify-center py-16 text-center gap-4">
+    <div className="flex flex-col items-center text-center gap-3">
       <div
         className="flex items-center justify-center rounded-2xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800"
         style={{ width: 52, height: 52 }}
       >
         <span style={{ color: "var(--accent)" }}>
-          <ScaleIcon size={26} />
+          <ScaleIcon size={22} />
         </span>
       </div>
       <div className="flex flex-col gap-1">
@@ -423,10 +423,10 @@ export function HistoryScreen({ onGoSettle }) {
 
   return (
     <div
-      className="min-h-[100dvh] bg-white dark:bg-zinc-950 transition-colors duration-200"
+      className="min-h-[100dvh] flex flex-col bg-white dark:bg-zinc-950 transition-colors duration-200"
       style={{ paddingTop: "env(safe-area-inset-top)" }}
     >
-      <div className="max-w-[480px] mx-auto px-5 pt-4 pb-24">
+      <div className="flex-1 flex flex-col w-full max-w-[480px] mx-auto px-5 pt-4 pb-24">
         <h1 className="text-xl font-semibold tracking-tight text-zinc-900 dark:text-white mb-6">
           settle it<span style={{ color: "var(--accent)" }}>.</span>
         </h1>
@@ -434,7 +434,9 @@ export function HistoryScreen({ onGoSettle }) {
         <StreakCard streak={streak} />
 
         {history.length === 0 ? (
-          <EmptyState onGoSettle={onGoSettle} />
+          <div className="flex-1 flex items-center justify-center">
+            <EmptyState onGoSettle={onGoSettle} />
+          </div>
         ) : (
           <div className="flex flex-col gap-2 mt-6">
             {history.map((entry) => (
