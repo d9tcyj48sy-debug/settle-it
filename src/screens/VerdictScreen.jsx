@@ -138,7 +138,7 @@ export function VerdictScreen({ verdict, onNewSettle, onArgueBetter }) {
             transition: rulingVisible ? "opacity 0.5s ease" : "none",
           }}
         >
-          <p className="text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
+          <p className="selectable text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
             {ruling}
           </p>
         </div>

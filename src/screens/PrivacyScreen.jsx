@@ -5,7 +5,7 @@ function Section({ title, children }) {
   return (
     <section className="flex flex-col gap-2">
       <h2 className="text-sm font-semibold text-zinc-900 dark:text-white">{title}</h2>
-      <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">{children}</p>
+      <p className="selectable text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">{children}</p>
     </section>
   );
 }
@@ -42,7 +42,7 @@ export function PrivacyScreen({ onBack }) {
             <p className="text-xs font-medium text-zinc-400 dark:text-zinc-500 uppercase tracking-widest">
               last updated: june 2026
             </p>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+            <p className="selectable text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
               Settle it. is built to collect as little as possible. Here&apos;s exactly what happens with your data.
             </p>
           </div>

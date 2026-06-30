@@ -9,4 +9,13 @@ body {
 
 * {
   -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+textarea,
+.selectable {
+  user-select: text;
+  -webkit-user-select: text;
 }
