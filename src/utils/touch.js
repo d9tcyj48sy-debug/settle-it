@@ -39,17 +39,17 @@ export function textPressOut(e) {
   });
 }
 
-// For list rows inside a Card (e.g. SettingsScreen TappableRow, ThemePickerScreen
-// rows) — fills solid instantly on press and clears instantly on release, same as
-// the HistoryScreen entry background, plus the shared scale feedback.
+// For list rows inside a shared Card (e.g. SettingsScreen TappableRow,
+// ThemePickerScreen rows) — fills solid instantly on press and clears instantly
+// on release, same as the HistoryScreen entry background. No scale: these rows
+// share one fixed-size Card with siblings, so shrinking just the row would pull
+// its edges away from the Card's stationary boundary, leaving a gap.
 export function rowPressIn(e) {
-  pressIn(e);
   const el = e.currentTarget;
   const isDark = document.documentElement.classList.contains("dark");
   el.style.backgroundColor = isDark ? "rgb(39 39 42)" : "rgb(244 244 245)";
 }
 
 export function rowPressOut(e) {
-  pressOut(e);
   e.currentTarget.style.backgroundColor = "";
 }
