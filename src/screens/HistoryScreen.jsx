@@ -41,6 +41,7 @@ function StreakCard({ streak }) {
 
 function HistoryEntry({ entry, isExpanded, onToggle, onDelete, isSwipeOpen, onSwipeOpen, onSwipeClose }) {
   const { topicLabel, createdAt, sideAPercentage, ruling, won } = entry;
+  const outerRef = useRef(null);
   const contentRef = useRef(null);
   const touchState = useRef({
     startX: 0, startY: 0,
@@ -69,8 +70,9 @@ function HistoryEntry({ entry, isExpanded, onToggle, onDelete, isSwipeOpen, onSw
 
   // Touch event setup — runs once, uses refs for everything
   useEffect(() => {
+    const outer = outerRef.current;
     const el = contentRef.current;
-    if (!el) return;
+    if (!el || !outer) return;
     const t = touchState.current;
 
     function setPressedBg() {
@@ -79,6 +81,27 @@ function HistoryEntry({ entry, isExpanded, onToggle, onDelete, isSwipeOpen, onSw
     }
     function clearPressedBg() {
       el.style.backgroundColor = "";
+    }
+
+    // Scale tap feedback — instant down, 120ms ease up
+    let scaleApplied = false;
+    function applyScale() {
+      outer.style.transform = "scale(0.98)";
+      scaleApplied = true;
+    }
+    function releaseScale() {
+      if (!scaleApplied) return;
+      scaleApplied = false;
+      outer.style.transition = "border-color 180ms ease, transform 120ms ease";
+      outer.style.transform = "";
+      // React will reset outer.style.transition on its next render; this is
+      // a safety clear in case no re-render follows (e.g. scroll path)
+      outer.addEventListener("transitionend", function onEnd(ev) {
+        if (ev.propertyName === "transform") {
+          outer.style.transition = "";
+          outer.removeEventListener("transitionend", onEnd);
+        }
+      });
     }
 
     function snapTo(offset, animated) {
@@ -101,6 +124,7 @@ function HistoryEntry({ entry, isExpanded, onToggle, onDelete, isSwipeOpen, onSw
       t.wasSwiping = false;
       el.style.transition = "none";
       setPressedBg();
+      applyScale();
     }
 
     function onTouchMove(e) {
@@ -114,8 +138,10 @@ function HistoryEntry({ entry, isExpanded, onToggle, onDelete, isSwipeOpen, onSw
         if (Math.abs(dx) >= Math.abs(dy)) {
           t.isSliding = true;
           clearPressedBg(); // swiping, not tapping
+          releaseScale();
         } else {
           clearPressedBg(); // scrolling, not tapping
+          releaseScale();
           el.style.transition = "";
           return;
         }
@@ -134,6 +160,7 @@ function HistoryEntry({ entry, isExpanded, onToggle, onDelete, isSwipeOpen, onSw
     function onTouchEnd() {
       clearPressedBg(); // always clear on lift, before any transition is restored
       if (!t.isSliding) {
+        releaseScale(); // tap — release scale with animation
         el.style.transition = "";
         return;
       }
@@ -151,6 +178,7 @@ function HistoryEntry({ entry, isExpanded, onToggle, onDelete, isSwipeOpen, onSw
 
     function onTouchCancel() {
       clearPressedBg();
+      releaseScale();
       el.style.transition = "";
       t.isSliding = false;
       t.directionDetermined = false;
@@ -200,7 +228,14 @@ function HistoryEntry({ entry, isExpanded, onToggle, onDelete, isSwipeOpen, onSw
   }
 
   return (
-    <div className="relative rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800">
+    <div
+      ref={outerRef}
+      className="relative rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800"
+      style={{
+        transition: "border-color 180ms ease",
+        borderColor: isExpanded ? "rgba(124, 92, 252, 0.33)" : undefined,
+      }}
+    >
       {/* Delete button revealed on swipe */}
       <div
         className="absolute inset-y-0 right-0 flex items-center justify-center bg-red-500"
@@ -265,7 +300,13 @@ function HistoryEntry({ entry, isExpanded, onToggle, onDelete, isSwipeOpen, onSw
           className="overflow-hidden transition-all duration-300 ease-in-out"
           style={{ maxHeight: isExpanded ? "300px" : "0px" }}
         >
-          <div onClick={(e) => e.stopPropagation()}>
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              opacity: isExpanded ? 1 : 0,
+              transition: isExpanded ? "opacity 150ms ease 300ms" : "opacity 0ms",
+            }}
+          >
             <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed pt-3 mt-3 border-t border-zinc-200 dark:border-zinc-800">
               {ruling}
             </p>
