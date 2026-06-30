@@ -1,0 +1,277 @@
+import { useState } from "react";
+import { useTheme } from "../context/useTheme";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  MoonSettingsIcon,
+  VolumeIcon,
+  ShieldIcon,
+  TrashIcon,
+} from "../components/Icons";
+import {
+  clearHistory,
+  getSoundPreference,
+  setSoundPreference,
+  resetStreak,
+} from "../services/storageService";
+
+const THEME_CYCLE = { dark: "light", light: "system", system: "dark" };
+
+function themeSubtitle(theme) {
+  if (theme === "system") return "currently following system";
+  if (theme === "dark") return "on";
+  return "off";
+}
+
+function Toggle({ on, onToggle }) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={on}
+      onClick={onToggle}
+      className={on ? "" : "bg-zinc-300 dark:bg-zinc-600"}
+      style={{
+        position: "relative",
+        width: 44,
+        height: 26,
+        borderRadius: 13,
+        background: on ? "#7c5cfc" : undefined,
+        transition: "background 200ms",
+        border: "none",
+        cursor: "pointer",
+        padding: 0,
+        flexShrink: 0,
+        WebkitTapHighlightColor: "transparent",
+      }}
+    >
+      <span
+        style={{
+          position: "absolute",
+          top: 3,
+          left: on ? 21 : 3,
+          width: 20,
+          height: 20,
+          borderRadius: "50%",
+          background: "white",
+          boxShadow: "0 1px 3px rgba(0,0,0,0.28)",
+          transition: "left 200ms",
+          display: "block",
+        }}
+      />
+    </button>
+  );
+}
+
+function SectionLabel({ children }) {
+  return (
+    <p className="text-[10px] font-semibold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 mb-2 px-1">
+      {children}
+    </p>
+  );
+}
+
+function SettingRow({ icon, label, subtitle, right }) {
+  return (
+    <div className="flex items-center gap-3 px-4 py-3.5">
+      <span className="text-zinc-500 dark:text-zinc-400 shrink-0">{icon}</span>
+      <div className="flex-1 min-w-0">
+        <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100">{label}</p>
+        {subtitle && (
+          <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-0.5">{subtitle}</p>
+        )}
+      </div>
+      {right}
+    </div>
+  );
+}
+
+function Card({ children }) {
+  return (
+    <div className="rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 overflow-hidden divide-y divide-zinc-200 dark:divide-zinc-800">
+      {children}
+    </div>
+  );
+}
+
+function TappableRow({ icon, label, onClick, danger }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="w-full flex items-center gap-3 px-4 py-3.5 text-left active:bg-zinc-100 dark:active:bg-zinc-800 transition-colors"
+      style={{ WebkitTapHighlightColor: "transparent" }}
+    >
+      <span
+        className="shrink-0"
+        style={{ color: danger ? "#ef4444" : undefined }}
+      >
+        {icon}
+      </span>
+      <span
+        className={`flex-1 text-sm font-medium ${
+          danger ? "text-red-500" : "text-zinc-900 dark:text-zinc-100"
+        }`}
+      >
+        {label}
+      </span>
+      <span className="text-zinc-400 dark:text-zinc-500 shrink-0">
+        <ChevronRightIcon size={16} />
+      </span>
+    </button>
+  );
+}
+
+function ConfirmModal({ title, message, confirmLabel, cancelLabel, onConfirm, onCancel }) {
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center px-5"
+      style={{ background: "rgba(0,0,0,0.5)" }}
+      onClick={onCancel}
+    >
+      <div
+        className="w-full max-w-[320px] bg-white dark:bg-[#18181c] border border-zinc-200 dark:border-[#28282e] rounded-2xl p-5 flex flex-col gap-4 animate-fade-in"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex flex-col gap-1.5">
+          <p className="text-sm font-semibold text-zinc-900 dark:text-white">{title}</p>
+          {message && (
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">{message}</p>
+          )}
+        </div>
+        <div className="flex gap-2">
+          <button
+            onClick={onConfirm}
+            className="flex-1 border border-zinc-200 dark:border-[#28282e] text-zinc-700 dark:text-zinc-300 bg-transparent active:opacity-70 transition-opacity duration-100"
+            style={{ borderRadius: "14px", padding: "12px", fontSize: "12.5px", fontWeight: 500 }}
+          >
+            {confirmLabel}
+          </button>
+          <button
+            onClick={onCancel}
+            className="flex-1 text-white active:brightness-90 transition-all duration-100"
+            style={{
+              background: "linear-gradient(to bottom, #8463f7, #7350ed)",
+              borderRadius: "14px",
+              padding: "12px",
+              fontSize: "12.5px",
+              fontWeight: 500,
+            }}
+          >
+            {cancelLabel}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function SettingsScreen({ onBack }) {
+  const { theme, setTheme } = useTheme();
+  const [sound, setSound] = useState(getSoundPreference);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [cleared, setCleared] = useState(false);
+
+  const effectiveDark =
+    theme === "dark" ||
+    (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+  function handleThemeToggle() {
+    setTheme(THEME_CYCLE[theme]);
+  }
+
+  function handleSoundToggle() {
+    const next = !sound;
+    setSoundPreference(next);
+    setSound(next);
+  }
+
+  function handleClearConfirm() {
+    clearHistory();
+    resetStreak();
+    setShowConfirm(false);
+    setCleared(true);
+    setTimeout(() => setCleared(false), 2500);
+  }
+
+  return (
+    <div
+      className="min-h-[100dvh] bg-white dark:bg-zinc-950 flex flex-col transition-colors duration-200"
+      style={{ paddingTop: "env(safe-area-inset-top)" }}
+    >
+      <div className="flex-1 max-w-[480px] w-full mx-auto px-5 pt-6 pb-10">
+        {/* Header */}
+        <header className="flex items-center gap-3 mb-10">
+          <button
+            type="button"
+            onClick={onBack}
+            aria-label="Back"
+            className="p-2 -ml-2 rounded-lg text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+            style={{ background: "none", border: "none", WebkitTapHighlightColor: "transparent" }}
+          >
+            <ChevronLeftIcon size={20} />
+          </button>
+          <h1 className="text-xl font-semibold tracking-tight text-zinc-900 dark:text-white">
+            settings
+          </h1>
+        </header>
+
+        <div className="flex flex-col gap-6">
+          {/* Appearance */}
+          <section>
+            <SectionLabel>appearance</SectionLabel>
+            <Card>
+              <SettingRow
+                icon={<MoonSettingsIcon size={18} />}
+                label="dark mode"
+                subtitle={themeSubtitle(theme)}
+                right={<Toggle on={effectiveDark} onToggle={handleThemeToggle} />}
+              />
+            </Card>
+          </section>
+
+          {/* Sound */}
+          <section>
+            <SectionLabel>sound</SectionLabel>
+            <Card>
+              <SettingRow
+                icon={<VolumeIcon size={18} />}
+                label="verdict sound effects"
+                right={<Toggle on={sound} onToggle={handleSoundToggle} />}
+              />
+            </Card>
+          </section>
+
+          {/* Data */}
+          <section>
+            <SectionLabel>data</SectionLabel>
+            <Card>
+              <TappableRow
+                icon={<ShieldIcon size={18} />}
+                label="privacy policy"
+                onClick={() => window.open("/privacy", "_blank")}
+              />
+              <TappableRow
+                icon={<TrashIcon size={18} />}
+                label={cleared ? "history cleared" : "clear all history"}
+                danger={!cleared}
+                onClick={cleared ? undefined : () => setShowConfirm(true)}
+              />
+            </Card>
+          </section>
+        </div>
+      </div>
+
+      {showConfirm && (
+        <ConfirmModal
+          title="clear all history?"
+          message="this will permanently delete all your verdicts and reset your win streak to zero."
+          confirmLabel="clear everything"
+          cancelLabel="keep it"
+          onConfirm={handleClearConfirm}
+          onCancel={() => setShowConfirm(false)}
+        />
+      )}
+    </div>
+  );
+}

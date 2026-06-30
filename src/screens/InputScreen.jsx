@@ -1,53 +1,8 @@
 import { useEffect, useState } from "react";
-import { useTheme } from "../context/useTheme";
-import { HistoryIcon } from "../components/Icons";
+import { GearIcon, HistoryIcon } from "../components/Icons";
 
 const MAX = 500;
 const WARN = 400;
-
-function SunIcon() {
-  return (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <circle cx="12" cy="12" r="4" />
-      <line x1="12" y1="2" x2="12" y2="6" />
-      <line x1="12" y1="18" x2="12" y2="22" />
-      <line x1="4.93" y1="4.93" x2="7.76" y2="7.76" />
-      <line x1="16.24" y1="16.24" x2="19.07" y2="19.07" />
-      <line x1="2" y1="12" x2="6" y2="12" />
-      <line x1="18" y1="12" x2="22" y2="12" />
-      <line x1="4.93" y1="19.07" x2="7.76" y2="16.24" />
-      <line x1="16.24" y1="7.76" x2="19.07" y2="4.93" />
-    </svg>
-  );
-}
-
-function MoonIcon() {
-  return (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-    </svg>
-  );
-}
 
 function CharCount({ count }) {
   if (count < WARN) return null;
@@ -95,10 +50,9 @@ function Textarea({ label, value, onChange, placeholder, autoFocus }) {
   );
 }
 
-export function InputScreen({ onSubmit, argueBetter, dirtyCheckRef }) {
+export function InputScreen({ onSubmit, argueBetter, dirtyCheckRef, onOpenSettings }) {
   const [sideA, setSideA] = useState(() => argueBetter?.sideA ?? "");
   const [sideB, setSideB] = useState(() => argueBetter?.sideB ?? "");
-  const { theme, setTheme } = useTheme();
 
   // Keep parent's dirty-check ref in sync with the latest field values
   useEffect(() => {
@@ -108,16 +62,7 @@ export function InputScreen({ onSubmit, argueBetter, dirtyCheckRef }) {
     return () => { dirtyCheckRef.current = null; };
   }, [sideA, sideB, dirtyCheckRef, argueBetter]);
 
-  const isDark =
-    theme === "dark" ||
-    (theme === "system" &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches);
-
   const isDisabled = sideA.trim().length === 0 && sideB.trim().length === 0;
-
-  function toggleTheme() {
-    setTheme(isDark ? "light" : "dark");
-  }
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -140,14 +85,12 @@ export function InputScreen({ onSubmit, argueBetter, dirtyCheckRef }) {
             </h1>
             <button
               type="button"
-              onClick={toggleTheme}
-              aria-label={
-                isDark ? "Switch to light mode" : "Switch to dark mode"
-              }
+              onClick={onOpenSettings}
+              aria-label="Open settings"
               style={{ background: "none", border: "none", WebkitAppearance: "none", WebkitTapHighlightColor: "transparent" }}
               className="bg-transparent border-none p-2 rounded-lg text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
             >
-              {isDark ? <SunIcon /> : <MoonIcon />}
+              <GearIcon size={20} />
             </button>
           </header>
 

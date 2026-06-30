@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { shareVerdict } from "../services/shareCard";
+import { playVerdictSound } from "../services/soundService";
 import { BoltIcon, EditIcon, ShareIcon } from "../components/Icons";
 
 const ANIM_DURATION = 1000;
@@ -33,6 +34,7 @@ export function VerdictScreen({ verdict, onNewSettle, onArgueBetter }) {
         rafRef.current = requestAnimationFrame(tick);
       } else {
         setRulingVisible(true);
+        playVerdictSound(sideAPercentage);
         if (sideAPercentage >= 85) {
           setCelebrating(true);
           try { navigator.vibrate && navigator.vibrate([50, 50, 50, 50, 100]); } catch { /* Vibration API unavailable */ }

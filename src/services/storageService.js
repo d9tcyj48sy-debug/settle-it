@@ -2,6 +2,7 @@ const KEYS = {
   history: "settleit_history",
   streak: "settleit_streak",
   theme: "settleit_theme",
+  sound: "settleit_sound",
 };
 
 function read(key, fallback) {
@@ -63,4 +64,19 @@ export function getThemePreference() {
 
 export function setThemePreference(theme) {
   write(KEYS.theme, theme);
+}
+
+// Sound preference — boolean (default true for new users)
+export function getSoundPreference() {
+  const raw = localStorage.getItem(KEYS.sound);
+  return raw === null ? true : JSON.parse(raw);
+}
+
+export function setSoundPreference(enabled) {
+  write(KEYS.sound, enabled);
+}
+
+// Reset streak to zero (used by clear all history)
+export function resetStreak() {
+  write(KEYS.streak, { current: 0, best: 0 });
 }

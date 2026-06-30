@@ -4,6 +4,7 @@ import { LoadingScreen } from "./screens/LoadingScreen";
 import { VerdictScreen } from "./screens/VerdictScreen";
 import { HistoryScreen } from "./screens/HistoryScreen";
 import { ErrorScreen } from "./screens/ErrorScreen";
+import { SettingsScreen } from "./screens/SettingsScreen";
 import { BottomNav } from "./components/BottomNav";
 import { getVerdict } from "./services/verdictService";
 import { addVerdict, updateStreak } from "./services/storageService";
@@ -169,7 +170,15 @@ export default function App() {
     });
   }
 
-  const showNav = screen !== "loading" && screen !== "splash";
+  function handleOpenSettings() {
+    navigate("settings");
+  }
+
+  function handleCloseSettings() {
+    navigate("input");
+  }
+
+  const showNav = screen !== "loading" && screen !== "splash" && screen !== "settings";
   const activeTab = screen === "history" ? "history" : "settle";
 
   return (
@@ -181,7 +190,8 @@ export default function App() {
         }}
       >
         {screen === "splash" && <SplashScreen onComplete={() => setScreen("input")} />}
-        {screen === "input" && <InputScreen onSubmit={handleSubmit} argueBetter={argueBetter} dirtyCheckRef={inputDirtyCheckRef} />}
+        {screen === "input" && <InputScreen onSubmit={handleSubmit} argueBetter={argueBetter} dirtyCheckRef={inputDirtyCheckRef} onOpenSettings={handleOpenSettings} />}
+        {screen === "settings" && <SettingsScreen onBack={handleCloseSettings} />}
         {screen === "loading" && <LoadingScreen />}
         {screen === "verdict" && (
           <VerdictScreen
