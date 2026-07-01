@@ -89,10 +89,12 @@ function Textarea({ label, value, onChange, placeholder, autoFocus }) {
   );
 }
 
-export function InputScreen({ onSubmit, argueBetter, dirtyCheckRef, onOpenSettings }) {
+export function InputScreen({ onSubmit, argueBetter, dirtyCheckRef, onOpenSettings, onCreateRoom }) {
   const [sideA, setSideA] = useState(() => argueBetter?.sideA ?? "");
   const [sideB, setSideB] = useState(() => argueBetter?.sideB ?? "");
   const [mode, setMode] = useState("quick");
+  const [creating, setCreating] = useState(false);
+  const [createError, setCreateError] = useState(null);
 
   // Keep parent's dirty-check ref in sync with the latest field values
   useEffect(() => {
@@ -110,8 +112,15 @@ export function InputScreen({ onSubmit, argueBetter, dirtyCheckRef, onOpenSettin
     onSubmit(sideA, sideB);
   }
 
-  function handleCreateRoom() {
-    console.log("create room");
+  async function handleCreateRoom() {
+    setCreating(true);
+    setCreateError(null);
+    try {
+      await onCreateRoom();
+    } catch {
+      setCreateError("couldn't create a room, try again");
+      setCreating(false);
+    }
   }
 
   return (
@@ -207,15 +216,23 @@ export function InputScreen({ onSubmit, argueBetter, dirtyCheckRef, onOpenSettin
             >
               <button
                 type="button"
-                onClick={handleCreateRoom}
-                onTouchStart={pressIn}
+                onClick={creating ? undefined : handleCreateRoom}
+                disabled={creating}
+                onTouchStart={creating ? undefined : pressIn}
                 onTouchEnd={pressOut}
                 onTouchCancel={pressOut}
                 className="w-full py-4 rounded-xl text-base font-semibold text-white"
-                style={{ background: "var(--accent)", WebkitTapHighlightColor: "transparent" }}
+                style={{
+                  background: "var(--accent)",
+                  opacity: creating ? 0.6 : 1,
+                  WebkitTapHighlightColor: "transparent",
+                }}
               >
-                create a room
+                {creating ? "creating room…" : "create a room"}
               </button>
+              {createError && (
+                <p className="text-sm text-center text-red-500 -mt-1">{createError}</p>
+              )}
               <p className="text-sm text-center text-zinc-500 dark:text-zinc-400 leading-relaxed">
                 send a link to your opponent — each of you writes your side in private
               </p>

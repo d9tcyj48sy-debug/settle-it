@@ -7,10 +7,12 @@ import { ErrorScreen } from "./screens/ErrorScreen";
 import { SettingsScreen } from "./screens/SettingsScreen";
 import { ThemePickerScreen } from "./screens/ThemePickerScreen";
 import { PrivacyScreen } from "./screens/PrivacyScreen";
+import { RoomWaitingScreen } from "./screens/RoomWaitingScreen";
 import { BottomNav } from "./components/BottomNav";
 import { getVerdict } from "./services/verdictService";
 import { addVerdict, updateStreak } from "./services/storageService";
 import { supabase } from "./services/supabaseClient";
+import { createRoom } from "./services/roomService";
 import "./App.css";
 
 const MIN_LOADING_MS = 1500;
@@ -81,6 +83,7 @@ export default function App() {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [verdict, setVerdict] = useState(null);
   const [error, setError] = useState(null);
+  const [currentRoom, setCurrentRoom] = useState(null);
   const [lastSides, setLastSides] = useState({ sideA: "", sideB: "" });
   const [argueBetter, setArgueBetter] = useState(null);
   const [confirmModal, setConfirmModal] = useState(null);
@@ -134,6 +137,16 @@ export default function App() {
       updateStreak(won);
       navigate("verdict", () => setVerdict(fullVerdict));
     }
+  }
+
+  async function handleCreateRoom() {
+    const userId = anonUserRef.current?.id ?? null;
+    const room = await createRoom(userId);
+    navigate('roomWaiting', () => setCurrentRoom(room));
+  }
+
+  function handleCancelRoom() {
+    navigate('input', () => setCurrentRoom(null));
   }
 
   function handleArgueBetter() {
@@ -216,7 +229,7 @@ export default function App() {
     navigate("settings");
   }
 
-  const showNav = screen !== "loading" && screen !== "splash" && screen !== "settings" && screen !== "themePicker" && screen !== "privacy";
+  const showNav = screen !== "loading" && screen !== "splash" && screen !== "settings" && screen !== "themePicker" && screen !== "privacy" && screen !== "roomWaiting";
   const activeTab = screen === "history" ? "history" : "settle";
 
   return (
@@ -228,7 +241,8 @@ export default function App() {
         }}
       >
         {screen === "splash" && <SplashScreen onComplete={() => setScreen("input")} />}
-        {screen === "input" && <InputScreen onSubmit={handleSubmit} argueBetter={argueBetter} dirtyCheckRef={inputDirtyCheckRef} onOpenSettings={handleOpenSettings} />}
+        {screen === "input" && <InputScreen onSubmit={handleSubmit} argueBetter={argueBetter} dirtyCheckRef={inputDirtyCheckRef} onOpenSettings={handleOpenSettings} onCreateRoom={handleCreateRoom} />}
+        {screen === "roomWaiting" && currentRoom && <RoomWaitingScreen room={currentRoom} onCancel={handleCancelRoom} />}
         {screen === "settings" && <SettingsScreen onBack={handleCloseSettings} onOpenThemePicker={handleOpenThemePicker} onOpenPrivacy={handleOpenPrivacy} />}
         {screen === "themePicker" && <ThemePickerScreen onBack={handleCloseThemePicker} />}
         {screen === "privacy" && <PrivacyScreen onBack={handleClosePrivacy} />}
