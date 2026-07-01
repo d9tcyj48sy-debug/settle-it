@@ -10,6 +10,7 @@ import { PrivacyScreen } from "./screens/PrivacyScreen";
 import { BottomNav } from "./components/BottomNav";
 import { getVerdict } from "./services/verdictService";
 import { addVerdict, updateStreak } from "./services/storageService";
+import { supabase } from "./services/supabaseClient";
 import "./App.css";
 
 const MIN_LOADING_MS = 1500;
@@ -85,6 +86,19 @@ export default function App() {
   const [confirmModal, setConfirmModal] = useState(null);
   const transitionRef = useRef(null);
   const inputDirtyCheckRef = useRef(null);
+  const anonUserRef = useRef(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        anonUserRef.current = session.user;
+      } else {
+        supabase.auth.signInAnonymously().then(({ data }) => {
+          anonUserRef.current = data?.user ?? null;
+        });
+      }
+    });
+  }, []);
 
   function navigate(nextScreen, setupFn) {
     if (transitionRef.current) clearTimeout(transitionRef.current);
