@@ -2,6 +2,34 @@ import { useEffect, useState } from "react";
 import { GearIcon, HistoryIcon } from "../components/Icons";
 import { pressIn, pressOut } from "../utils/touch";
 
+function ModeToggle({ mode, onSet }) {
+  return (
+    <div className="flex rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-[#333338] p-1 gap-1 mb-6">
+      {[["quick", "quick settle"], ["challenge", "challenge someone"]].map(([id, label]) => {
+        const active = mode === id;
+        return (
+          <button
+            key={id}
+            type="button"
+            onClick={() => onSet(id)}
+            onTouchStart={pressIn}
+            onTouchEnd={pressOut}
+            onTouchCancel={pressOut}
+            className={`flex-1 py-2 rounded-lg text-xs font-semibold ${active ? "" : "text-zinc-500 dark:text-zinc-400"}`}
+            style={{
+              background: active ? "var(--accent)" : "transparent",
+              color: active ? "#fff" : undefined,
+              WebkitTapHighlightColor: "transparent",
+            }}
+          >
+            {label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 const MAX = 500;
 const WARN = 450;
 
@@ -64,6 +92,7 @@ function Textarea({ label, value, onChange, placeholder, autoFocus }) {
 export function InputScreen({ onSubmit, argueBetter, dirtyCheckRef, onOpenSettings }) {
   const [sideA, setSideA] = useState(() => argueBetter?.sideA ?? "");
   const [sideB, setSideB] = useState(() => argueBetter?.sideB ?? "");
+  const [mode, setMode] = useState("quick");
 
   // Keep parent's dirty-check ref in sync with the latest field values
   useEffect(() => {
@@ -79,6 +108,10 @@ export function InputScreen({ onSubmit, argueBetter, dirtyCheckRef, onOpenSettin
     e.preventDefault();
     if (isDisabled) return;
     onSubmit(sideA, sideB);
+  }
+
+  function handleCreateRoom() {
+    console.log("create room");
   }
 
   return (
@@ -108,58 +141,81 @@ export function InputScreen({ onSubmit, argueBetter, dirtyCheckRef, onOpenSettin
             </button>
           </header>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="flex flex-col gap-6 flex-1">
-            {argueBetter && (
-              <span
-                className="inline-flex items-center gap-1 rounded-full self-start"
-                style={{
-                  fontSize: "11px",
-                  padding: "4px 10px",
-                  color: "var(--accent)",
-                  background: "var(--accent-dim)",
-                  border: "1px solid var(--accent-border)",
-                }}
-              >
-                <HistoryIcon size={10} />
-                round {argueBetter.round}: {argueBetter.topicLabel}
-              </span>
-            )}
-            <div className="flex gap-3">
-              <Textarea
-                label="your side"
-                value={sideA}
-                onChange={setSideA}
-                placeholder="I said we agreed to leave at 8..."
-                autoFocus={!!argueBetter}
-              />
-              <Textarea
-                label="their side"
-                value={sideB}
-                onChange={setSideB}
-                placeholder="She knew I needed more time..."
-              />
-            </div>
+          {/* Mode toggle */}
+          <ModeToggle mode={mode} onSet={setMode} />
 
-            <button
-              type="submit"
-              disabled={isDisabled}
-              onTouchStart={isDisabled ? undefined : pressIn}
-              onTouchEnd={pressOut}
-              onTouchCancel={pressOut}
-              className={`
-              w-full py-4 rounded-xl text-base font-semibold text-white
-              transition-all duration-150
-              ${
-                isDisabled
-                  ? "opacity-30 cursor-not-allowed bg-[var(--accent)]"
-                  : "bg-[var(--accent)] hover:brightness-110"
-              }
-            `}
-            >
-              settle it
-            </button>
-          </form>
+          {mode === "quick" ? (
+            /* Quick settle — existing form, unchanged */
+            <form onSubmit={handleSubmit} className="flex flex-col gap-6 flex-1">
+              {argueBetter && (
+                <span
+                  className="inline-flex items-center gap-1 rounded-full self-start"
+                  style={{
+                    fontSize: "11px",
+                    padding: "4px 10px",
+                    color: "var(--accent)",
+                    background: "var(--accent-dim)",
+                    border: "1px solid var(--accent-border)",
+                  }}
+                >
+                  <HistoryIcon size={10} />
+                  round {argueBetter.round}: {argueBetter.topicLabel}
+                </span>
+              )}
+              <div className="flex gap-3">
+                <Textarea
+                  label="your side"
+                  value={sideA}
+                  onChange={setSideA}
+                  placeholder="I said we agreed to leave at 8..."
+                  autoFocus={!!argueBetter}
+                />
+                <Textarea
+                  label="their side"
+                  value={sideB}
+                  onChange={setSideB}
+                  placeholder="She knew I needed more time..."
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={isDisabled}
+                onTouchStart={isDisabled ? undefined : pressIn}
+                onTouchEnd={pressOut}
+                onTouchCancel={pressOut}
+                className={`
+                w-full py-4 rounded-xl text-base font-semibold text-white
+                transition-all duration-150
+                ${
+                  isDisabled
+                    ? "opacity-30 cursor-not-allowed bg-[var(--accent)]"
+                    : "bg-[var(--accent)] hover:brightness-110"
+                }
+              `}
+              >
+                settle it
+              </button>
+            </form>
+          ) : (
+            /* Challenge someone */
+            <div className="flex flex-col flex-1 items-center justify-center gap-4">
+              <button
+                type="button"
+                onClick={handleCreateRoom}
+                onTouchStart={pressIn}
+                onTouchEnd={pressOut}
+                onTouchCancel={pressOut}
+                className="w-full py-4 rounded-xl text-base font-semibold text-white"
+                style={{ background: "var(--accent)", WebkitTapHighlightColor: "transparent" }}
+              >
+                create a room
+              </button>
+              <p className="text-sm text-center text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                send a link to your opponent — each of you writes your side in private
+              </p>
+            </div>
+          )}
         </div>
       </div>
 
