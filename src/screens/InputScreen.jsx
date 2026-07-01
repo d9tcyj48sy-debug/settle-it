@@ -144,79 +144,82 @@ export function InputScreen({ onSubmit, argueBetter, dirtyCheckRef, onOpenSettin
           {/* Mode toggle */}
           <ModeToggle mode={mode} onSet={setMode} />
 
-          <div className="flex flex-col flex-1 min-h-[320px]">
-            {mode === "quick" ? (
-              /* Quick settle — existing form, unchanged */
-              <form onSubmit={handleSubmit} className="flex flex-col gap-6 flex-1">
-                {argueBetter && (
-                  <span
-                    className="inline-flex items-center gap-1 rounded-full self-start"
-                    style={{
-                      fontSize: "11px",
-                      padding: "4px 10px",
-                      color: "var(--accent)",
-                      background: "var(--accent-dim)",
-                      border: "1px solid var(--accent-border)",
-                    }}
-                  >
-                    <HistoryIcon size={10} />
-                    round {argueBetter.round}: {argueBetter.topicLabel}
-                  </span>
-                )}
-                <div className="flex gap-3">
-                  <Textarea
-                    label="your side"
-                    value={sideA}
-                    onChange={setSideA}
-                    placeholder="I said we agreed to leave at 8..."
-                    autoFocus={!!argueBetter}
-                  />
-                  <Textarea
-                    label="their side"
-                    value={sideB}
-                    onChange={setSideB}
-                    placeholder="She knew I needed more time..."
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={isDisabled}
-                  onTouchStart={isDisabled ? undefined : pressIn}
-                  onTouchEnd={pressOut}
-                  onTouchCancel={pressOut}
-                  className={`
-                  w-full py-4 rounded-xl text-base font-semibold text-white
-                  transition-all duration-150
-                  ${
-                    isDisabled
-                      ? "opacity-30 cursor-not-allowed bg-[var(--accent)]"
-                      : "bg-[var(--accent)] hover:brightness-110"
-                  }
-                `}
+          <div className="relative">
+            {/* Form always rendered — its height anchors the container */}
+            <form
+              onSubmit={handleSubmit}
+              className="flex flex-col gap-6"
+              style={{ visibility: mode === "quick" ? "visible" : "hidden" }}
+              inert={mode !== "quick" ? "" : undefined}
+              aria-hidden={mode !== "quick"}
+            >
+              {argueBetter && (
+                <span
+                  className="inline-flex items-center gap-1 rounded-full self-start"
+                  style={{
+                    fontSize: "11px",
+                    padding: "4px 10px",
+                    color: "var(--accent)",
+                    background: "var(--accent-dim)",
+                    border: "1px solid var(--accent-border)",
+                  }}
                 >
-                  settle it
-                </button>
-              </form>
-            ) : (
-              /* Challenge someone */
-              <div className="flex flex-col flex-1 items-center justify-center gap-4">
-                <button
-                  type="button"
-                  onClick={handleCreateRoom}
-                  onTouchStart={pressIn}
-                  onTouchEnd={pressOut}
-                  onTouchCancel={pressOut}
-                  className="w-full py-4 rounded-xl text-base font-semibold text-white"
-                  style={{ background: "var(--accent)", WebkitTapHighlightColor: "transparent" }}
-                >
-                  create a room
-                </button>
-                <p className="text-sm text-center text-zinc-500 dark:text-zinc-400 leading-relaxed">
-                  send a link to your opponent — each of you writes your side in private
-                </p>
+                  <HistoryIcon size={10} />
+                  round {argueBetter.round}: {argueBetter.topicLabel}
+                </span>
+              )}
+              <div className="flex gap-3">
+                <Textarea
+                  label="your side"
+                  value={sideA}
+                  onChange={setSideA}
+                  placeholder="I said we agreed to leave at 8..."
+                  autoFocus={!!argueBetter}
+                />
+                <Textarea
+                  label="their side"
+                  value={sideB}
+                  onChange={setSideB}
+                  placeholder="She knew I needed more time..."
+                />
               </div>
-            )}
+              <button
+                type="submit"
+                disabled={isDisabled}
+                onTouchStart={isDisabled ? undefined : pressIn}
+                onTouchEnd={pressOut}
+                onTouchCancel={pressOut}
+                className={`w-full py-4 rounded-xl text-base font-semibold text-white transition-all duration-150 ${
+                  isDisabled
+                    ? "opacity-30 cursor-not-allowed bg-[var(--accent)]"
+                    : "bg-[var(--accent)] hover:brightness-110"
+                }`}
+              >
+                settle it
+              </button>
+            </form>
+
+            {/* Challenge view — overlays the form space, centered within it */}
+            <div
+              className="absolute inset-0 flex flex-col items-center justify-center gap-4"
+              style={{ visibility: mode === "challenge" ? "visible" : "hidden" }}
+              aria-hidden={mode !== "challenge"}
+            >
+              <button
+                type="button"
+                onClick={handleCreateRoom}
+                onTouchStart={pressIn}
+                onTouchEnd={pressOut}
+                onTouchCancel={pressOut}
+                className="w-full py-4 rounded-xl text-base font-semibold text-white"
+                style={{ background: "var(--accent)", WebkitTapHighlightColor: "transparent" }}
+              >
+                create a room
+              </button>
+              <p className="text-sm text-center text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                send a link to your opponent — each of you writes your side in private
+              </p>
+            </div>
           </div>
         </div>
       </div>
