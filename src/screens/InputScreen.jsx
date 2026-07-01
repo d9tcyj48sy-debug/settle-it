@@ -201,8 +201,8 @@ export function InputScreen({ onSubmit, argueBetter, dirtyCheckRef, onOpenSettin
 
             {/* Challenge view — overlays the form space, centered within it */}
             <div
-              className="absolute inset-0 flex flex-col items-center justify-center gap-4"
-              style={{ visibility: mode === "challenge" ? "visible" : "hidden" }}
+              className="absolute inset-0 flex-col items-center justify-center gap-4 bg-white dark:bg-[#0e0e0f]"
+              style={{ display: mode === "challenge" ? "flex" : "none" }}
               aria-hidden={mode !== "challenge"}
             >
               <button
